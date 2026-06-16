@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { bannerAPI, productAPI, testimonialAPI, blogAPI, categoryAPI, getImageUrl } from '../services/api'
@@ -252,6 +252,7 @@ const Home = () => {
   const [testimonials, setTestimonials] = useState([])
   const [blogPosts, setBlogPosts] = useState([])
   const [loading, setLoading] = useState(true)
+  const heroSwiperRef = useRef(null)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -279,10 +280,26 @@ const Home = () => {
     fetchData()
   }, [])
 
+  useEffect(() => {
+    if (loading || banners.length === 0) return
+    const el = heroSwiperRef.current
+    if (!el) return
+    if (el.swiper) el.swiper.destroy()
+    new window.Swiper(el, {
+      slidesPerView: 1,
+      loop: true,
+      effect: "fade",
+      speed: 500,
+      autoplay: { delay: 3000, disableOnInteraction: false },
+      navigation: { nextEl: ".swiper-button-next", prevEl: ".swiper-button-prev" }
+    })
+    return () => { if (el.swiper) el.swiper.destroy() }
+  }, [loading, banners.length])
+
   return (
     <>
 <section className="hero__slider--section">
-            <div className="hero__slider--inner hero__slider--activation swiper">
+            <div className="hero__slider--inner hero__slider--activation swiper" ref={heroSwiperRef}>
                 <div className="hero__slider--wrapper swiper-wrapper">
                     {banners.map((banner, idx) => (
                     <div className="swiper-slide" key={banner._id || idx}>
