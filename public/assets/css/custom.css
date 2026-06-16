@@ -8,6 +8,35 @@
   --dark: #121a25;
 }
 
+/* ===== Hero Slider Overrides ===== */
+.hero__slider--items {
+  position: relative;
+}
+.hero__slider--items::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.1) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+.hero__slider--bg {
+  background-position: center top !important;
+  background-color: #1a1a2e;
+}
+.hero__slider--items__inner {
+  position: relative;
+  z-index: 2;
+}
+.slider__content {
+  padding: 0 4rem !important;
+}
+@media only screen and (max-width: 767px) {
+  .slider__content {
+    padding: 0 1.5rem !important;
+  }
+}
+
 /* ===== Grid & Utility Classes ===== */
 .container {
   width: 100%;
