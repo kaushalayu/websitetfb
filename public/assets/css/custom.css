@@ -317,8 +317,10 @@
 
 .main__logo--img {
   max-height: 80px;
+  max-width: 100%;
   width: auto;
   display: block;
+  object-fit: contain;
 }
 
 .main__logo--link {
@@ -333,11 +335,15 @@
 }
 
 /* -- Desktop Menu -- */
+.header__menu {
+  margin: 0 20px;
+}
+
 .header__menu--navigation ul {
   list-style: none;
   margin: 0;
   padding: 0;
-  gap: 4px;
+  gap: 2px;
 }
 
 .header__menu--items {
@@ -346,7 +352,7 @@
 
 .header__menu--link {
   display: inline-block;
-  padding: 8px 16px;
+  padding: 6px 10px;
   font-family: "Josefin Sans", sans-serif;
   font-weight: 600;
   font-size: 1.5rem;
