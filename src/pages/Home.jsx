@@ -296,6 +296,16 @@ const Home = () => {
     return () => { if (el.swiper) el.swiper.destroy() }
   }, [loading, banners.length])
 
+  useEffect(() => {
+    const els = document.querySelectorAll('.hnl-reveal, .hb2-reveal, .hig-reveal')
+    if (!els.length || !window.IntersectionObserver) return
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-visible'); obs.unobserve(e.target) } })
+    }, { threshold: 0.15 })
+    els.forEach(el => obs.observe(el))
+    return () => obs.disconnect()
+  }, [loading])
+
   return (
     <>
 <section className="hero__slider--section">
@@ -789,7 +799,7 @@ const Home = () => {
 
 
         {/* ── Newsletter Banner — Premium redesign ── */}
-        <section className="hnl-section">
+<section className="hnl-section hnl-reveal">
           <div className="container-fluid">
             <div className="hnl-wrap" style={{ backgroundImage: "url('assets/img/banner/banner-bg2.webp')" }}>
               <div className="hnl-overlay" />
@@ -799,7 +809,7 @@ const Home = () => {
                   Stay Connected
                 </span>
                 <h2 className="hnl-title">Subscribe & Get <em>Exclusive</em> Deals</h2>
-                <p className="hnl-desc">New arrivals, design inspiration &amp; member-only discounts — straight to your inbox.</p>
+                <p className="hnl-desc">New arrivals, design inspiration &amp; member-only discounts - straight to your inbox.</p>
                 <NewsletterBanner bgImage="" fluid noGapTop />
               </div>
               <div className="hnl-deco hnl-deco--1" />
@@ -813,7 +823,7 @@ const Home = () => {
         {/* ══════════════════════════════════════════════
             HOME BLOG SECTION — Premium redesign
         ══════════════════════════════════════════════ */}
-        <section className="hb2-section">
+        <section className="hb2-section hb2-reveal">
           <div className="container">
 
             {/* Header */}
@@ -922,7 +932,7 @@ const Home = () => {
 
 
         {/* ── Instagram Section — Premium redesign ── */}
-        <div className="hig-section">
+        <div className="hig-section hig-reveal">
           <div className="container">
             <div className="hig-header">
               <div className="hig-header__icon">
