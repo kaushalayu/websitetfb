@@ -6582,7 +6582,7 @@ input.quantity__number::-webkit-outer-spin-button {
 .sqv-price { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
 .sqv-current { font-size: 2rem; font-weight: 800; color: #1a1209; }
 .sqv-old { font-size: 1.3rem; color: #bbb; text-decoration: line-through; }
-.sqv-desc { font-size: 1.15rem; color: #666; line-height: 1.7; margin-bottom: 24px; text-align: justify; }
+.sqv-desc { font-size: 1.15rem; color: #666; line-height: 1.7; margin-bottom: 24px; text-align: justify; overflow-wrap: break-word; word-break: break-word; }
 .sqv-row { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
 .sqv-label { font-size: 1.1rem; font-weight: 600; color: #888; min-width: 40px; }
 .sqv-qty {
@@ -7404,12 +7404,33 @@ input.quantity__number::-webkit-outer-spin-button {
 /* ── Import Josefin Sans extra weights ── */
 /* (already loaded via index.html — just referencing) */
 
-/* ── Apply Josefin Sans as base to ALL redesigned sections ── */
-.hfc-section,   .hfc-section *,
+/* ── Inter font base: admin sidebar style ── */
+.hfc-section, .hfc-section *,
 .hcat2-section, .hcat2-section *,
-.hpop-section,  .hpop-section *,
-.sp-page,       .sp-page *,
-/* hnl/hblog/hig removed — now have own font-family in section CSS */
+.hpop-section, .hpop-section *,
+.hac-section, .hac-section *,
+.hnl-section, .hnl-section *,
+.hb2-section, .hb2-section *,
+.hig-section, .hig-section *,
+.sp-page, .sp-page *,
+.hero__slider--section, .hero__slider--section *,
+.banner__section, .banner__section *,
+.banner__video--section, .banner__video--section *,
+.shipping__section, .shipping__section * {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+}
+/* Blog details page */
+.main__content_wrapper,
+.blog__details--content, .blog__details--content *,
+.blog__post--meta, .blog__post--meta *,
+.reviews__comment--content__desc,
+.reviews__comment--content__title,
+.recent__post--title, .recent__post--title a,
+.widget__search--form, .widget__search--form *,
+.widget__tagcloud, .widget__tagcloud *,
+.comment__reply--btn {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+}
 
 /* ── SECTION 1: Featured Collection ── */
 .hfc-overline  { font-size: 1.1rem !important; letter-spacing: .18em !important; }
@@ -7450,42 +7471,73 @@ input.quantity__number::-webkit-outer-spin-button {
 
 /* ── SHOP PAGE ── */
 .sp-hero__title        { font-size: clamp(2.6rem, 5vw, 4rem) !important; }
-.sp-breadcrumb         { font-size: 1.1rem !important; }
-.sp-sidebar__head h3   { font-size: 1.3rem !important; }
-.sp-widget__title      { font-size: 1rem !important; }
-.sp-search-form input  { font-size: 1.15rem !important; }
-.sp-cat-list button    { font-size: 1.15rem !important; }
-.sp-price-inputs label { font-size: 1rem !important; }
-.sp-price-inputs input { font-size: 1.15rem !important; }
-.sp-btn-apply          { font-size: 1.15rem !important; padding: 13px 24px !important; }
-.sp-btn-clear          { font-size: 1.1rem !important; }
-.sp-filter-btn         { font-size: 1.1rem !important; padding: 12px 20px !important; }
-.sp-results            { font-size: 1.1rem !important; }
-.sp-sort               { font-size: 1.1rem !important; padding: 11px 14px !important; }
-.sp-chip               { font-size: 1rem !important; }
-.sp-card__cat          { font-size: 0.9rem !important; }
-.sp-card__title        { font-size: 1.4rem !important; font-family: 'Inter', sans-serif !important; }
-.sp-card__desc         { font-size: 1.1rem !important; }
-.sp-card__stars span   { font-size: 1rem !important; }
-.sp-card__price--current { font-size: 1.5rem !important; }
-.sp-card__price--old   { font-size: 1.1rem !important; }
-.sp-card__cart-btn     { font-size: 1.15rem !important; padding: 14px !important; }
-.sp-badge              { font-size: 0.95rem !important; }
-.sp-page-btn           { font-size: 1.1rem !important; min-width: 46px !important; height: 46px !important; }
-.sp-empty h3, .sp-error h3 { font-size: 1.7rem !important; }
-.sp-empty p,  .sp-error p  { font-size: 1.2rem !important; }
+.sp-breadcrumb         { font-size: 0.85rem !important; font-weight: 500 !important; }
+.sp-sidebar__head h3   { font-size: 0.85rem !important; font-weight: 600 !important; letter-spacing: 0.02em !important; }
+.sp-widget__title      { font-size: 0.85rem !important; font-weight: 700 !important; letter-spacing: 0.02em !important; }
+.sp-search-form input  { font-size: 0.85rem !important; font-weight: 500 !important; }
+.sp-cat-list button    { font-size: 0.85rem !important; font-weight: 500 !important; }
+.sp-price-inputs label { font-size: 0.85rem !important; }
+.sp-price-inputs input { font-size: 0.85rem !important; }
+.sp-btn-apply          { font-size: 0.85rem !important; font-weight: 600 !important; padding: 12px 22px !important; }
+.sp-btn-clear          { font-size: 0.85rem !important; }
+.sp-filter-btn         { font-size: 0.85rem !important; font-weight: 600 !important; padding: 11px 18px !important; }
+.sp-results            { font-size: 0.85rem !important; font-weight: 500 !important; }
+.sp-sort               { font-size: 0.85rem !important; font-weight: 500 !important; padding: 10px 12px !important; }
+.sp-chip               { font-size: 0.85rem !important; font-weight: 500 !important; }
+.sp-card__cat          { font-size: 0.65rem !important; font-weight: 700 !important; letter-spacing: 1.2px !important; text-transform: uppercase !important; }
+.sp-card__title        { font-size: 1.2rem !important; font-weight: 700 !important; }
+.sp-card__desc         { font-size: 0.85rem !important; font-weight: 400 !important; text-align: justify !important; }
+.sp-card__stars span   { font-size: 0.85rem !important; }
+.sp-card__price--current { font-size: 1.3rem !important; font-weight: 700 !important; }
+.sp-card__price--old   { font-size: 0.85rem !important; }
+.sp-card__cart-btn     { font-size: 0.85rem !important; font-weight: 600 !important; padding: 12px !important; }
+.sp-badge              { font-size: 0.75rem !important; font-weight: 700 !important; }
+.sp-page-btn           { font-size: 0.85rem !important; font-weight: 500 !important; min-width: 42px !important; height: 42px !important; }
+.sp-empty h3, .sp-error h3 { font-size: 1.3rem !important; }
+.sp-empty p,  .sp-error p  { font-size: 0.9rem !important; }
 
 /* ── QUICK VIEW MODAL ── */
-.sqv-category          { font-size: 1rem !important; }
-.sqv-title             { font-size: 1.9rem !important; font-family: 'Playfair Display', Georgia, serif !important; }
-.sqv-current           { font-size: 2rem !important; }
-.sqv-old               { font-size: 1.3rem !important; }
-.sqv-desc              { font-size: 1.2rem !important; }
-.sqv-label             { font-size: 1.1rem !important; }
-.sqv-qty span          { font-size: 1.2rem !important; }
-.sqv-btn-cart          { font-size: 1.2rem !important; padding: 16px !important; }
-.sqv-btn-link          { font-size: 1.1rem !important; padding: 14px !important; }
+.sqv-category          { font-size: 0.65rem !important; font-weight: 700 !important; letter-spacing: 1.2px !important; text-transform: uppercase !important; }
+.sqv-title             { font-size: 1.6rem !important; font-weight: 700 !important; }
+.sqv-current           { font-size: 1.5rem !important; font-weight: 700 !important; }
+.sqv-old               { font-size: 1rem !important; }
+.sqv-desc              { font-size: 0.85rem !important; font-weight: 400 !important; text-align: justify !important; overflow-wrap: break-word !important; word-break: break-word !important; }
+.sqv-label             { font-size: 0.85rem !important; font-weight: 500 !important; }
+.sqv-qty span          { font-size: 0.85rem !important; font-weight: 500 !important; }
+.sqv-btn-cart          { font-size: 0.85rem !important; font-weight: 600 !important; padding: 14px !important; }
+.sqv-btn-link          { font-size: 0.85rem !important; font-weight: 500 !important; padding: 12px !important; }
 
+/* ── BLOG SECTION (hb2-*) ── Admin sidebar style ── */
+.hb2-subtitle          { font-size: 0.85rem !important; font-weight: 500 !important; }
+.hb2-meta span         { font-size: 0.85rem !important; font-weight: 500 !important; }
+.hb2-read-btn          { font-size: 0.85rem !important; font-weight: 600 !important; }
+.hb2-featured__excerpt { font-size: 0.85rem !important; font-weight: 400 !important; line-height: 1.7 !important; }
+.hb2-card__excerpt     { font-size: 0.85rem !important; font-weight: 400 !important; }
+
+/* ── INSTAGRAM SECTION (hig-*) ── Admin sidebar style ── */
+.hig-subtitle          { font-size: 0.85rem !important; font-weight: 500 !important; }
+.hig-overlay span      { font-size: 0.85rem !important; font-weight: 600 !important; }
+
+/* ── BLOG DETAILS PAGE ── Admin sidebar style ── */
+.post__header--title             { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important; font-size: 2rem !important; font-weight: 700 !important; letter-spacing: -0.02em !important; }
+.blog__details--content           { font-size: 0.85rem !important; font-weight: 400 !important; line-height: 1.8 !important; }
+.blog__details--content h2        { font-size: 1.5rem !important; font-weight: 700 !important; }
+.blog__details--content h3        { font-size: 1.2rem !important; font-weight: 700 !important; }
+.blog__details--content h4        { font-size: 1.1rem !important; font-weight: 700 !important; }
+.blog__details--content p         { font-size: 0.85rem !important; font-weight: 400 !important; line-height: 1.8 !important; }
+.blog__tags--media__title,
+.blog__social--media__title       { font-size: 0.85rem !important; font-weight: 600 !important; }
+.widget__title                    { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important; font-size: 0.85rem !important; font-weight: 700 !important; letter-spacing: 0.02em !important; }
+.recent__post--title              { font-size: 0.85rem !important; font-weight: 600 !important; }
+.recent__post--title a            { font-size: 0.85rem !important; font-weight: 600 !important; }
+.reviews__comment--content__title { font-size: 0.85rem !important; font-weight: 700 !important; }
+.reviews__comment--content__date  { font-size: 0.75rem !important; font-weight: 500 !important; }
+.reviews__comment--content__desc  { font-size: 0.85rem !important; font-weight: 400 !important; }
+.reviews__comment--reply__title   { font-size: 0.85rem !important; font-weight: 700 !important; }
+.comment__reply--btn              { font-size: 0.85rem !important; font-weight: 600 !important; }
+.reviews__comment--reply__textarea{ font-size: 0.85rem !important; font-weight: 400 !important; }
+.widget__search--form input       { font-size: 0.85rem !important; font-weight: 400 !important; }
+.widget__tagcloud a               { font-size: 0.85rem !important; font-weight: 500 !important; }
 
 
 /* ============================================================
