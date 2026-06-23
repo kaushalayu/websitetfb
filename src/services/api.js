@@ -79,6 +79,7 @@ export const categoryAPI = {
 export const blogAPI = {
   list: (params) => handle(api.get('/blog', { params })),
   getBySlug: (slug) => handle(api.get(`/blog/${slug}`)),
+  recent: (limit = 4) => handle(api.get('/blog/recent', { params: { limit } })),
   categories: () => handle(api.get('/blog/categories')),
   tags: () => handle(api.get('/blog/tags')),
 }
