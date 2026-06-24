@@ -57,7 +57,7 @@ const ArtisanalSection = ({ products = [], dealEndDate, dealTitle, dealDesc, dea
     : FALLBACK
 
   return (
-    <section className="hac-section">
+    <section className="hac-section hac-reveal">
       <div className="container-fluid">
         <div className="hac-inner">
 
@@ -95,7 +95,7 @@ const ArtisanalSection = ({ products = [], dealEndDate, dealTitle, dealDesc, dea
               {displayProducts.map((p,i) => {
                 const disc = Math.round((1 - p.price/p.old)*100)
                 return (
-                  <div className="hac-card" key={i}>
+                  <div className={`hac-card ${i % 2 === 0 ? 'hac-reveal--left' : 'hac-reveal--right'}`} key={i}>
                     <div className="hac-card__img-wrap">
                       {p.badge && <span className="hac-card__badge">{p.badge}</span>}
                       <Link to="/shop">
@@ -157,7 +157,7 @@ const MostPopularSection = ({ products = [] }) => {
     { title:'Minimalist Desk Chair', salePrice:7499, price:10999, images:[{url:'assets/img/product/product7.webp'}], tags:['Sale'], slug:'' },
   ]
   return (
-    <section className="hpop-section">
+    <section className="hpop-section hpop-reveal">
       <div className="container">
 
         {/* Header */}
@@ -191,7 +191,7 @@ const MostPopularSection = ({ products = [] }) => {
             const badge = p.tags?.[0] || null
             const href = p.slug ? `/product-variable?slug=${p.slug}` : '/shop'
             return (
-              <div className="hpop-card" key={i}>
+              <div className={`hpop-card ${i % 2 === 0 ? 'hpop-reveal--left' : 'hpop-reveal--right'}`} key={i}>
                 <div className="hpop-card__img-wrap">
                   {disc && <span className="hpop-badge hpop-badge--sale">-{disc}%</span>}
                   {badge && !disc && <span className="hpop-badge hpop-badge--label">{badge}</span>}
@@ -297,7 +297,7 @@ const Home = () => {
   }, [loading, banners.length])
 
   useEffect(() => {
-    const els = document.querySelectorAll('.hnl-reveal, .hb2-reveal, .hig-reveal')
+    const els = document.querySelectorAll('.hts-reveal, .hn2-reveal, .hfc2-reveal, .hb3-reveal, .hig2-reveal, .hcat2-reveal, .hpop-reveal, .hac-reveal, .hts-reveal--left, .hts-reveal--right, .hb3-reveal--left, .hb3-reveal--right, .hfc2-reveal--left, .hfc2-reveal--right, .hcat2-reveal--left, .hcat2-reveal--right, .hpop-reveal--left, .hpop-reveal--right, .hac-reveal--left, .hac-reveal--right, .hig2-reveal--left, .hig2-reveal--right')
     if (!els.length || !window.IntersectionObserver) return
     const obs = new IntersectionObserver(entries => {
       entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-visible'); obs.unobserve(e.target) } })
@@ -342,75 +342,74 @@ const Home = () => {
         {/* ══════════════════════════════════════════════
             SECTION 1 — Featured Products Collection
         ══════════════════════════════════════════════ */}
-        <section className="hfc-section">
+        {/* ── Featured Collection — Luxury Showcase ── */}
+        <section className="hfc2-section hfc2-reveal">
           <div className="container">
 
-            {/* Header */}
-            <div className="hfc-header">
-              <span className="hfc-overline">Handpicked For You</span>
-              <h2 className="hfc-title">Our Featured <em>Collection</em></h2>
-              <p className="hfc-subtitle">Premium wooden furniture crafted with love in <strong>Lucknow</strong> — built to last generations.</p>
+            <div className="hfc2-header">
+              <span className="hfc2-overline">Handpicked For You</span>
+              <h2 className="hfc2-title">Our Featured <em>Collection</em></h2>
+              <p className="hfc2-subtitle">Premium solid-wood furniture crafted in <strong>Lucknow</strong> — built for generations.</p>
             </div>
 
-            {/* Product Grid */}
-            <div className="hfc-grid">
-              {(products.length > 0 ? products.slice(0,6) : [
-                { _id:'1', slug:'', title:'Royal Sofa Set',     salePrice:49999, price:64999, img:'assets/img/product/product1.webp', badge:'Hot' },
-                { _id:'2', slug:'', title:'Teak Dining Table',  salePrice:32999, price:42000, img:'assets/img/product/product3.webp', badge:'New' },
-                { _id:'3', slug:'', title:'King Size Bed',      salePrice:38999, price:49999, img:'assets/img/product/product5.webp', badge:null },
-                { _id:'4', slug:'', title:'Office Chair',       salePrice:8999,  price:12999, img:'assets/img/product/product7.webp', badge:'Sale' },
-                { _id:'5', slug:'', title:'Wooden Wardrobe',    salePrice:55000, price:70000, img:'assets/img/product/product9.webp', badge:null },
-                { _id:'6', slug:'', title:'Coffee Table',       salePrice:14999, price:19999, img:'assets/img/product/product2.webp', badge:'New' },
+            <div className="hfc2-grid">
+              {(products.length > 0 ? products.slice(0,8) : [
+                { _id:'1', slug:'', title:'Royal Sofa Set',     salePrice:49999, price:64999, images:[{url:'assets/img/product/product1.webp'},{url:'assets/img/product/product2.webp'}], badge:'Hot' },
+                { _id:'2', slug:'', title:'Teak Dining Table',  salePrice:32999, price:42000, images:[{url:'assets/img/product/product3.webp'},{url:'assets/img/product/product4.webp'}], badge:'New' },
+                { _id:'3', slug:'', title:'King Size Bed',      salePrice:38999, price:49999, images:[{url:'assets/img/product/product5.webp'},{url:'assets/img/product/product6.webp'}], badge:null },
+                { _id:'4', slug:'', title:'Office Chair',       salePrice:8999,  price:12999, images:[{url:'assets/img/product/product7.webp'},{url:'assets/img/product/product8.webp'}], badge:'Sale' },
+                { _id:'5', slug:'', title:'Wooden Wardrobe',    salePrice:55000, price:70000, images:[{url:'assets/img/product/product9.webp'},{url:'assets/img/product/product10.webp'}], badge:null },
+                { _id:'6', slug:'', title:'Coffee Table',       salePrice:14999, price:19999, images:[{url:'assets/img/product/product2.webp'},{url:'assets/img/product/product1.webp'}], badge:'New' },
+                { _id:'7', slug:'', title:'Bookshelf Unit',     salePrice:25999, price:32999, images:[{url:'assets/img/product/product4.webp'},{url:'assets/img/product/product3.webp'}], badge:null },
+                { _id:'8', slug:'', title:'Study Desk',         salePrice:11999, price:15999, images:[{url:'assets/img/product/product6.webp'},{url:'assets/img/product/product5.webp'}], badge:'Sale' },
               ]).map((product, idx) => {
-                const img  = getImageUrl(product.images?.[0]?.url || product.images?.[0] || product.featuredImage, 'assets/img/product/product1.webp')
+                const img1 = getImageUrl(product.images?.[0]?.url || product.images?.[0] || product.featuredImage, 'assets/img/product/product1.webp')
+                const img2 = getImageUrl(product.images?.[1]?.url || product.images?.[0]?.url || product.featuredImage, 'assets/img/product/product2.webp')
                 const curr = product.salePrice || product.price || 0
                 const old  = product.salePrice && product.price > product.salePrice ? product.price : null
                 const disc = old ? Math.round((1 - curr/old)*100) : null
                 const href = product.slug ? `/product-variable?slug=${product.slug}` : '/shop'
                 return (
-                  <Link to={href} className={`hfc-card${idx === 0 ? ' hfc-card--hero' : ''}`} key={product._id || idx}>
-                    <div className="hfc-card__img-wrap">
-                      <img src={img} alt={product.title} className="hfc-card__img" loading="lazy"
+                  <Link to={href} className={`hfc2-card ${idx % 2 === 0 ? 'hfc2-reveal--left' : 'hfc2-reveal--right'}`} key={product._id || idx}>
+                    <div className="hfc2-card__img-wrap">
+                      <img src={img1} alt={product.title} className="hfc2-img--primary" loading="lazy"
                         onError={e=>{e.target.onerror=null;e.target.src='assets/img/product/product1.webp'}} />
-                      {disc && <span className="hfc-card__disc">-{disc}%</span>}
-                      {product.badge && !disc && <span className="hfc-card__badge">{product.badge}</span>}
+                      <img src={img2} alt={product.title} className="hfc2-img--secondary" loading="lazy"
+                        onError={e=>{e.target.onerror=null;e.target.src='assets/img/product/product2.webp'}} />
+                      {disc && <span className="hfc2-badge hfc2-badge--disc">-{disc}%</span>}
+                      {!disc && product.badge && <span className="hfc2-badge hfc2-badge--tag">{product.badge}</span>}
+                      <span className="hfc2-quick">Quick View</span>
                     </div>
-                    <div className="hfc-card__body">
-                      <h3 className="hfc-card__title">{product.title}</h3>
-                      <div className="hfc-card__price-row">
-                        <span className="hfc-card__price">₹{curr.toLocaleString('en-IN')}</span>
-                        {old && <span className="hfc-card__old">₹{old.toLocaleString('en-IN')}</span>}
+                    <div className="hfc2-card__body">
+                      <h3 className="hfc2-card__title">{product.title}</h3>
+                      <div className="hfc2-card__price-row">
+                        <span className="hfc2-card__price">₹{curr.toLocaleString('en-IN')}</span>
+                        {old && <span className="hfc2-card__old">₹{old.toLocaleString('en-IN')}</span>}
                       </div>
-                      <span className="hfc-card__cta">
-                        View Details
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-                      </span>
                     </div>
                   </Link>
                 )
               })}
             </div>
 
-            {/* Stats */}
-            <div className="hfc-stats">
+            <div className="hfc2-stats">
               {[
-                { num:'500+', label:'Designs in Stock' },
-                { num:'15+',  label:'Years of Craftsmanship' },
-                { num:'10k+', label:'Happy Customers' },
-                { num:'100%', label:'Solid Wood Quality' },
+                { num:'500+', label:'Designs' },
+                { num:'15+',  label:'Years' },
+                { num:'10k+', label:'Happy' },
+                { num:'100%', label:'Quality' },
               ].map((s,i) => (
-                <div className="hfc-stat" key={i}>
-                  <div className="hfc-stat__num">{s.num}</div>
-                  <div className="hfc-stat__label">{s.label}</div>
+                <div className="hfc2-stat" key={i}>
+                  <span className="hfc2-stat__num">{s.num}</span>
+                  <span className="hfc2-stat__label">{s.label}</span>
                 </div>
               ))}
             </div>
 
-            {/* CTA */}
-            <div className="hfc-footer">
-              <Link to="/shop" className="hfc-btn">
+            <div className="hfc2-footer">
+              <Link to="/shop" className="hfc2-btn">
                 View Full Collection
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
               </Link>
             </div>
 
@@ -421,7 +420,7 @@ const Home = () => {
         {/* ══════════════════════════════════════════════
             SECTION 2 — Shop by Category
         ══════════════════════════════════════════════ */}
-        <section className="hcat2-section">
+        <section className="hcat2-section hcat2-reveal">
           <div className="container">
 
             <div className="hcat2-header">
@@ -443,7 +442,7 @@ const Home = () => {
                   <svg key="3" viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M2 12h20"/><path d="M6 12v8"/><path d="M18 12v8"/><path d="M12 12v8"/><ellipse cx="12" cy="6" rx="8" ry="3"/></svg>,
                 ]
                 return (
-                  <Link to={`/shop?category=${cat.slug}`} className="hcat2-card" key={cat._id || i}>
+                  <Link to={`/shop?category=${cat.slug}`} className={`hcat2-card ${i % 2 === 0 ? 'hcat2-reveal--left' : 'hcat2-reveal--right'}`} key={cat._id || i}>
                     <img src={getImageUrl(cat.image, `assets/img/banner/banner${6 + i}.webp`)} alt={cat.name} className="hcat2-card__img" loading="lazy"
                       onError={e=>{e.target.onerror=null;e.target.src='assets/img/banner/banner6.webp'}} />
                     <div className="hcat2-card__veil" style={{'--cat-color': CAT_COLORS[i % CAT_COLORS.length]}} />
@@ -765,189 +764,138 @@ const Home = () => {
         
 
         
-        <section className="testimonial-redesign section--padding">
-            <div className="container">
-                <div className="section__heading text-center mb-50">
-                    <h2 className="testimonial-redesign-title">What Our <span>Customers Say</span></h2>
-                    <p className="testimonial-redesign-subtitle">हमारे ग्राहकों की राय — Real reviews from Lucknow</p>
-                </div>
-                <div className="testimonial-redesign-grid">
-                    {testimonials.map((t, idx) => (
-                    <div className="testimonial-redesign-card" key={t._id || idx}>
-                        <div className="testimonial-redesign-card__stars">
-                            {Array.from({ length: 5 }, (_, i) => (
-                            <svg key={i} width="16" height="16" viewBox="0 0 24 24" fill={i < (t.rating || 5) ? "#F5C518" : "currentColor"} opacity={i < (t.rating || 5) ? 1 : 0.3}>
-                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                            </svg>
-                            ))}
-                        </div>
-                        <p className="testimonial-redesign-card__text">"{t.content}"</p>
-                        <div className="testimonial-redesign-card__author">
-                            <img src={getImageUrl(t.image, 'assets/img/other/testimonial-thumb1.webp')} alt={t.name}
-                                className="testimonial-redesign-card__avatar" />
-                            <div>
-                                <h4 className="testimonial-redesign-card__name">{t.name}</h4>
-                                {t.role && <span className="testimonial-redesign-card__role">{t.role}</span>}
-                            </div>
-                        </div>
-                    </div>
-                    ))}
-                </div>
+        {/* ── Testimonials — Modern Cards ── */}
+        <section className="hts-section hts-reveal">
+          <div className="container">
+            <div className="hts-header">
+              <span className="hts-overline">Real Reviews</span>
+              <h2 className="hts-title">What Our <span>Customers Say</span></h2>
+              <p className="hts-subtitle">हमारे ग्राहकों की राय — Trusted by families across Lucknow</p>
             </div>
+            <div className="hts-grid">
+              {(testimonials.length > 0 ? testimonials : [
+                { _id:'t1', name:'Priya Sharma', role:'Homeowner, Gomti Nagar', content:'Absolutely stunning furniture! The teak wood dining set exceeded my expectations. Craftsmanship is world-class.', rating:5, image:'assets/img/other/testimonial-thumb1.webp' },
+                { _id:'t2', name:'Rahul Verma', role:'Interior Designer', content:'I recommend them to all my clients. Solid wood, honest pricing, and on-time delivery every single time.', rating:5, image:'assets/img/other/testimonial-thumb2.webp' },
+                { _id:'t3', name:'Anjali Gupta', role:'Architect', content:'The custom sofa set they made for our project was perfect. Great attention to detail and finish.', rating:5, image:'assets/img/other/testimonial-thumb3.webp' },
+              ]).map((t, i) => (
+                <div className={`hts-card ${i % 2 === 0 ? 'hts-reveal--left' : 'hts-reveal--right'}`} key={t._id || i}>
+                  <div className="hts-stars">
+                    {Array.from({ length: 5 }, (_, si) => (
+                      <svg key={si} width="12" height="12" viewBox="0 0 24 24" fill={si < (t.rating || 5) ? "#F5C518" : "currentColor"} opacity={si < (t.rating || 5) ? 1 : 0.2}>
+                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                      </svg>
+                    ))}
+                  </div>
+                  <p className="hts-text">"{t.content}"</p>
+                  <div className="hts-author">
+                    <img src={getImageUrl(t.image, 'assets/img/other/testimonial-thumb1.webp')} alt={t.name}
+                      className="hts-avatar" onError={e=>{e.target.onerror=null;e.target.src='assets/img/other/testimonial-thumb1.webp'}} />
+                    <div>
+                      <h4 className="hts-name">{t.name}</h4>
+                      {t.role && <span className="hts-role">{t.role}</span>}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </section>
-        
 
-
-        {/* ── Newsletter Banner — Premium redesign ── */}
-<section className="hnl-section hnl-reveal">
+        {/* ── Stay Connected — Premium ── */}
+        <section className="hn2-section hn2-reveal">
           <div className="container-fluid">
-            <div className="hnl-wrap" style={{ backgroundImage: "url('assets/img/banner/banner-bg2.webp')" }}>
-              <div className="hnl-overlay" />
-              <div className="hnl-content">
-                <span className="hnl-badge">
+            <div className="hn2-wrap" style={{ backgroundImage: "url('assets/img/banner/banner-bg2.webp')" }}>
+              <div className="hn2-overlay" />
+              <div className="hn2-content">
+                <span className="hn2-badge">
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
                   Stay Connected
                 </span>
-                <h2 className="hnl-title">Subscribe & Get <em>Exclusive</em> Deals</h2>
-                <p className="hnl-desc">New arrivals, design inspiration &amp; member-only discounts - straight to your inbox.</p>
+                <h2 className="hn2-title">Subscribe & Get <em>Exclusive</em> Deals</h2>
+                <p className="hn2-desc">New arrivals, design inspiration &amp; member-only discounts — straight to your inbox.</p>
                 <NewsletterBanner bgImage="" fluid noGapTop />
               </div>
-              <div className="hnl-deco hnl-deco--1" />
-              <div className="hnl-deco hnl-deco--2" />
+              <div className="hn2-deco hn2-deco--1" />
+              <div className="hn2-deco hn2-deco--2" />
             </div>
           </div>
         </section>
 
-
-        {/* ── Blog Section — Premium redesign ── */}
-        {/* ══════════════════════════════════════════════
-            HOME BLOG SECTION — Premium redesign
-        ══════════════════════════════════════════════ */}
-        <section className="hb2-section hb2-reveal">
+        {/* ── Blog Section — Modern Cards ── */}
+        <section className="hb3-section hb3-reveal">
           <div className="container">
-
-            {/* Header */}
-            <div className="hb2-header">
-              <div className="hb2-header__left">
-                <span className="hb2-overline">From Our Journal</span>
-                <h2 className="hb2-title">Furniture Tips &amp; <em>Design Ideas</em></h2>
-                <p className="hb2-subtitle">Care guides, buying tips &amp; interior inspiration for your dream home</p>
+            <div className="hb3-header">
+              <div>
+                <span className="hb3-overline">From Our Journal</span>
+                <h2 className="hb3-title">Furniture Tips &amp; <em>Design Ideas</em></h2>
               </div>
-              <Link to="/blog" className="hb2-all-btn">
-                All Articles
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              <Link to="/blog" className="hb3-all">
+                All Posts
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
               </Link>
             </div>
 
-            {/* Fallback posts if backend empty */}
             {(() => {
               const FALLBACK = [
-                { _id:'f1', slug:'', title:'How to Choose the Right Sofa for Your Living Room', excerpt:'A complete guide to picking the perfect sofa — fabric, size, style and budget tips for Indian homes.', author:'Admin', publishedAt:'2024-01-15', tags:['Buying Guide'], featuredImage:'assets/img/blog/blog1.webp' },
-                { _id:'f2', slug:'', title:'5 Ways to Care for Teak Wood Furniture',             excerpt:'Keep your teak furniture looking new for decades with these expert care and polishing tips.',                   author:'Admin', publishedAt:'2024-02-20', tags:['Care Tips'],    featuredImage:'assets/img/blog/blog2.webp' },
-                { _id:'f3', slug:'', title:'Trending Furniture Designs for 2025',                excerpt:'From minimalist to maximalist — discover the hottest furniture trends dominating Indian homes this year.',    author:'Admin', publishedAt:'2024-03-10', tags:['Trends'],       featuredImage:'assets/img/blog/blog3.webp' },
+                { _id:'f1', slug:'', title:'How to Choose the Right Sofa for Your Living Room', author:'Admin', publishedAt:'2024-01-15', tags:['Buying Guide'], featuredImage:'assets/img/blog/blog1.webp' },
+                { _id:'f2', slug:'', title:'5 Ways to Care for Teak Wood Furniture',             author:'Admin', publishedAt:'2024-02-20', tags:['Care Tips'],    featuredImage:'assets/img/blog/blog2.webp' },
+                { _id:'f3', slug:'', title:'Trending Furniture Designs for 2025',                author:'Admin', publishedAt:'2024-03-10', tags:['Trends'],       featuredImage:'assets/img/blog/blog3.webp' },
               ]
               const posts = blogPosts.length > 0 ? blogPosts : FALLBACK
               return (
-                <div className="hb2-grid">
-                  {/* Featured large card */}
-                  <article className="hb2-featured">
-                    <Link to={posts[0]?.slug ? `/blog-details?slug=${posts[0].slug}` : '/blog'} className="hb2-featured__img-wrap">
-                      <img
-                        src={getImageUrl(posts[0]?.featuredImage, 'assets/img/blog/blog1.webp')}
-                        alt={posts[0]?.title}
-                        className="hb2-featured__img"
-                        loading="lazy"
-                        onError={e=>{e.target.onerror=null;e.target.src='assets/img/blog/blog1.webp'}}
-                      />
-                      <div className="hb2-featured__overlay" />
-                      {posts[0]?.tags?.[0] && <span className="hb2-tag">{posts[0].tags[0]}</span>}
-                      <span className="hb2-featured__label">Featured</span>
-                    </Link>
-                    <div className="hb2-featured__body">
-                      <div className="hb2-meta">
-                        <span>
-                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                          {posts[0]?.author?.name || posts[0]?.author || 'Admin'}
-                        </span>
-                        <span>
-                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                          {posts[0]?.publishedAt ? new Date(posts[0].publishedAt).toLocaleDateString('en-IN',{year:'numeric',month:'short',day:'2-digit'}) : ''}
-                        </span>
-                      </div>
-                      <h3 className="hb2-featured__title">
-                        <Link to={posts[0]?.slug ? `/blog-details?slug=${posts[0].slug}` : '/blog'}>{posts[0]?.title}</Link>
-                      </h3>
-                      <p className="hb2-featured__excerpt">{posts[0]?.excerpt}</p>
-                      <Link to={posts[0]?.slug ? `/blog-details?slug=${posts[0].slug}` : '/blog'} className="hb2-read-btn">
-                        Read Full Article
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                <div className="hb3-grid">
+                  {posts.slice(0, 3).map((post, i) => (
+                    <article key={post._id || i} className={`hb3-card ${i % 2 === 0 ? 'hb3-reveal--left' : 'hb3-reveal--right'}`}>
+                      <Link to={post.slug ? `/blog-details?slug=${post.slug}` : '/blog'} className="hb3-card__img-wrap">
+                        <img
+                          src={getImageUrl(post.featuredImage, `assets/img/blog/blog${i + 1}.webp`)}
+                          alt={post.title}
+                          className="hb3-card__img"
+                          loading="lazy"
+                          onError={e=>{e.target.onerror=null;e.target.src=`assets/img/blog/blog${i+1}.webp`}}
+                        />
+                        {post.tags?.[0] && <span className="hb3-tag">{post.tags[0]}</span>}
                       </Link>
-                    </div>
-                  </article>
-
-                  {/* Right small cards */}
-                  <div className="hb2-side">
-                    {posts.slice(1, 3).map((post, idx) => (
-                      <article className="hb2-card" key={post._id || idx}>
-                        <Link to={post.slug ? `/blog-details?slug=${post.slug}` : '/blog'} className="hb2-card__img-wrap">
-                          <img
-                            src={getImageUrl(post.featuredImage, `assets/img/blog/blog${idx + 2}.webp`)}
-                            alt={post.title}
-                            className="hb2-card__img"
-                            loading="lazy"
-                            onError={e=>{e.target.onerror=null;e.target.src=`assets/img/blog/blog${idx+2}.webp`}}
-                          />
-                          <div className="hb2-card__overlay" />
-                          {post.tags?.[0] && <span className="hb2-tag">{post.tags[0]}</span>}
-                        </Link>
-                        <div className="hb2-card__body">
-                          <div className="hb2-meta">
-                            <span>
-                              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                              {post.author?.name || post.author || 'Admin'}
-                            </span>
-                            <span>
-                              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                              {post.publishedAt ? new Date(post.publishedAt).toLocaleDateString('en-IN',{year:'numeric',month:'short',day:'2-digit'}) : ''}
-                            </span>
-                          </div>
-                          <h3 className="hb2-card__title">
-                            <Link to={post.slug ? `/blog-details?slug=${post.slug}` : '/blog'}>{post.title}</Link>
-                          </h3>
-                          <p className="hb2-card__excerpt">{post.excerpt}</p>
-                          <Link to={post.slug ? `/blog-details?slug=${post.slug}` : '/blog'} className="hb2-read-btn hb2-read-btn--sm">
-                            Read More
-                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-                          </Link>
+                      <div className="hb3-card__body">
+                        <div className="hb3-meta">
+                          <span>{post.author?.name || post.author || 'Admin'}</span>
+                          <span className="hb3-dot">·</span>
+                          <span>{post.publishedAt ? new Date(post.publishedAt).toLocaleDateString('en-IN',{year:'numeric',month:'short',day:'2-digit'}) : ''}</span>
                         </div>
-                      </article>
-                    ))}
-                  </div>
+                        <h3 className="hb3-card__title">
+                          <Link to={post.slug ? `/blog-details?slug=${post.slug}` : '/blog'}>{post.title}</Link>
+                        </h3>
+                        <Link to={post.slug ? `/blog-details?slug=${post.slug}` : '/blog'} className="hb3-read">
+                          Read
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                        </Link>
+                      </div>
+                    </article>
+                  ))}
                 </div>
               )
             })()}
-
           </div>
         </section>
 
 
-        {/* ── Instagram Section — Premium redesign ── */}
-        <div className="hig-section hig-reveal">
+        {/* ── Instagram Section — Tilt Grid ── */}
+        <div className="hig2-section hig2-reveal">
           <div className="container">
-            <div className="hig-header">
-              <div className="hig-header__icon">
-                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            <div className="hig2-header">
+              <div className="hig2-header__icon">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
               </div>
               <div>
-                <h2 className="hig-title">Follow Us on <span>Instagram</span></h2>
-                <p className="hig-subtitle">@wooden_furniture_lucknow — Tag us to get featured!</p>
+                <h2 className="hig2-title">Follow Us on <span>Instagram</span></h2>
+                <p className="hig2-subtitle">@wooden_furniture_lucknow — Tag us to get featured!</p>
               </div>
-              <a className="hig-follow-btn" href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">
-                Follow Us
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              <a className="hig2-follow" href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">
+                Follow
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
               </a>
             </div>
-            <div className="hig-grid">
+            <div className="hig2-grid">
               {(instagramPosts.length > 0 ? instagramPosts : [
                 { image: 'assets/img/other/instagram1.webp', url: 'https://www.instagram.com' },
                 { image: 'assets/img/other/instagram2.webp', url: 'https://www.instagram.com' },
@@ -956,11 +904,11 @@ const Home = () => {
                 { image: 'assets/img/other/instagram5.webp', url: 'https://www.instagram.com' },
                 { image: 'assets/img/other/instagram6.webp', url: 'https://www.instagram.com' },
               ]).map((item, i) => (
-                <a key={i} className="hig-item" href={item.url} target="_blank" rel="noopener noreferrer" aria-label={`Instagram post ${i + 1}`}>
-                  <img className="hig-img" src={getImageUrl(item.image, 'assets/img/other/instagram1.webp')} alt={`Instagram post ${i + 1}`} loading="lazy"
+                <a key={i} className={`hig2-item ${i % 2 === 0 ? 'hig2-reveal--left' : 'hig2-reveal--right'}`} href={item.url} target="_blank" rel="noopener noreferrer" aria-label={`Instagram post ${i + 1}`}>
+                  <img className="hig2-img" src={getImageUrl(item.image, 'assets/img/other/instagram1.webp')} alt={`Instagram post ${i + 1}`} loading="lazy"
                     onError={e=>{e.target.onerror=null;e.target.src='assets/img/other/instagram1.webp'}} />
-                  <span className="hig-overlay">
-                    <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                  <span className="hig2-overlay">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
                     <span>View</span>
                   </span>
                 </a>
