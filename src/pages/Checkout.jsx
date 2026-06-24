@@ -14,6 +14,7 @@ const Checkout = () => {
     email: user?.email || '',
     firstName: '',
     lastName: '',
+    phone: '',
     address: '',
     city: '',
     country: 'India',
@@ -42,6 +43,7 @@ const Checkout = () => {
           firstName: formData.firstName,
           lastName: formData.lastName,
           email: formData.email,
+          phone: formData.phone,
           address: formData.address,
           city: formData.city,
           country: formData.country,
@@ -206,6 +208,18 @@ const Checkout = () => {
                                                     <label className="checkout__input--label mb-5" htmlFor="input3">Company Name <span className="checkout__input--label__star">*</span></label>
 
                                                     <input className="checkout__input--field border-radius-5" placeholder="Company (optional)" id="input3" type="text" />
+
+                                                </div>
+
+                                            </div>
+
+                                            <div className="col-lg-6 col-md-6 mb-20">
+
+                                                <div className="checkout__input--list">
+
+                                                    <label className="checkout__input--label mb-5" htmlFor="inputPhone">Phone / WhatsApp <span className="checkout__input--label__star">*</span></label>
+
+                                                    <input className="checkout__input--field border-radius-5" placeholder="Mobile number for contact" id="inputPhone" type="tel" value={formData.phone} onChange={update('phone')} />
 
                                                 </div>
 
