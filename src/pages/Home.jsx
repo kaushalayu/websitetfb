@@ -68,7 +68,7 @@ const ArtisanalSection = ({ products = [], dealEndDate, dealTitle, dealDesc, dea
             <div className="hac-spotlight__content">
               <span className="hac-spotlight__label">Deal Of The Week</span>
               <h3 className="hac-spotlight__title">{dealTitle || 'Teakwood Dining Showcase'}</h3>
-              <p className="hac-spotlight__desc">Premium Teakwood Dining set — high durability, hand-varnished polish, custom upholstery options.</p>
+              <p className="hac-spotlight__desc">{dealDesc || 'Premium Teakwood Dining set — high durability, hand-varnished polish, custom upholstery options.'}</p>
               <div className="hac-timer">
                 {[{v:pad(time.d),l:'Days'},{v:pad(time.h),l:'Hrs'},{v:pad(time.m),l:'Mins'},{v:pad(time.s),l:'Secs'}].map((t,i)=>(
                   <div className="hac-timer__block" key={i}>
@@ -244,7 +244,7 @@ const MostPopularSection = ({ products = [] }) => {
 
 
 const Home = () => {
-  const { dealEndDate, dealTitle, dealDesc, dealImage, instagramPosts, bannerVideoUrl } = useSettings()
+  const { dealEndDate, dealTitle, dealDesc, dealImage, instagramPosts, instagramHandle, bannerVideoUrl } = useSettings()
   const [banners, setBanners] = useState([])
   const [products, setProducts] = useState([])
   const [allProducts, setAllProducts] = useState([])
@@ -260,7 +260,7 @@ const Home = () => {
         const [bannerRes, productRes, allProdRes, catRes, testimonialRes, blogRes] = await Promise.all([
           bannerAPI.list(),
           productAPI.list({ featured: true, limit: 12 }),
-          productAPI.list({ limit: 50 }),
+          productAPI.list({ limit: 200 }),
           categoryAPI.list(),
           testimonialAPI.list(),
           blogAPI.list({ limit: 3 }),
@@ -311,7 +311,7 @@ const Home = () => {
 <section className="hero__slider--section">
             <div className="hero__slider--inner hero__slider--activation swiper" ref={heroSwiperRef}>
                 <div className="hero__slider--wrapper swiper-wrapper">
-                    {banners.map((banner, idx) => (
+                    {banners.filter(b => b.type === 'hero' || !b.type).map((banner, idx) => (
                     <div className="swiper-slide" key={banner._id || idx}>
                         <div className="hero__slider--items hero__slider--bg" style={{ backgroundImage: banner.image ? `url(${getImageUrl(banner.image)})` : undefined }}>
                             <div className="container-fluid">
@@ -321,7 +321,7 @@ const Home = () => {
                                             <div className="slider__content">
                                                 {banner.subtitle && <p className="slider__content--desc desc1 text-white mb-15">{banner.subtitle}</p>}
                                                 <h2 className="slider__content--maintitle text-white h1">{banner.title}</h2>
-                                                <p className="slider__content--desc text-white mb-35 d-sm-2-none">Explore the finest collection in Lucknow. Up to 50% off!</p>
+                                                {banner.description && <p className="slider__content--desc text-white mb-35 d-sm-2-none">{banner.description}</p>}
                                                 <Link to={banner.link || "/shop"} className="slider__content--btn primary__btn">{banner.btnText || "Shop Now"}</Link>
                                             </div>
                                         </div>
@@ -468,58 +468,29 @@ const Home = () => {
             SECTION 3 — Most Popular Items (React tabs)
         ══════════════════════════════════════════════ */}
         <MostPopularSection products={allProducts} />
-        
 
-        
         <section className="banner__section section--padding pt-0">
             <div className="container-fluid">
                 <div className="row row-cols-lg-3 row-cols-md-2 row-cols-sm-2 row-cols-1 mb--n28">
-                    <div className="col mb-28">
+                    {banners.filter(b => b.type === 'promo_row_1').slice(0, 3).map((banner, i) => (
+                    <div className="col mb-28" key={banner._id || i}>
                         <div className="banner__items">
-                            <Link to="/shop" className="banner__items--thumbnail position__relative"><img
-                                    className="banner__items--thumbnail__img" src="assets/img/banner/banner6.webp"
-                                    alt="banner-img" />
-                                <div className="banner__items--content__style2 right">
-                                    <h2 className="banner__items--content__style2--title">Single Stylish <br />
-                                        Mini Chair </h2>
-                                    <span className="banner__items--content__link primary__btn style2">Order Now</span>
-                                </div>
-                            </Link>
-                        </div>
-                    </div>
-                    <div className="col mb-28">
-                        <div className="banner__items">
-                            <Link to="/shop" className="banner__items--thumbnail position__relative"><img
-                                    className="banner__items--thumbnail__img" src="assets/img/banner/banner7.webp"
-                                    alt="banner-img" />
-                                <div className="banner__items--content__style2 right">
-                                    <h2 className="banner__items--content__style2--title">New Furniture <br />
-                                        Tree Planet </h2>
-                                    <span className="banner__items--content__link primary__btn style2">Order Now</span>
-                                </div>
-                            </Link>
-                        </div>
-                    </div>
-                    <div className="col mb-28">
-                        <div className="banner__items">
-                            <Link to="/shop" className="banner__items--thumbnail position__relative"><img
-                                    className="banner__items--thumbnail__img" src="assets/img/banner/banner8.webp"
-                                    alt="banner-img" />
+                            <Link to={banner.link || "/shop"} className="banner__items--thumbnail position__relative"><img
+                                    className="banner__items--thumbnail__img" src={getImageUrl(banner.image, 'assets/img/banner/banner6.webp')}
+                                    alt={banner.title} onError={e=>{e.target.onerror=null;e.target.src='assets/img/banner/banner6.webp'}} />
                                 <div className="banner__items--content__style2">
-                                    <h2 className="banner__items--content__style2--title">Single Stylish <br />
-                                        Mini Chair </h2>
-                                    <span className="banner__items--content__link primary__btn style2">Order Now</span>
+                                    <h2 className="banner__items--content__style2--title">{banner.title || 'Special Offer'}</h2>
+                                    <span className="banner__items--content__link primary__btn style2">{banner.btnText || 'Order Now'}</span>
                                 </div>
                             </Link>
                         </div>
                     </div>
+                    ))}
                 </div>
             </div>
         </section>
         
-
-        
-                {/* ══════════════════════════════════════════════
+        {/* ══════════════════════════════════════════════
             ARTISANAL CARVING — Wooden Furniture Section
         ══════════════════════════════════════════════ */}
         <ArtisanalSection products={allProducts} dealEndDate={dealEndDate} dealTitle={dealTitle} dealDesc={dealDesc} dealImage={dealImage} />
@@ -527,45 +498,20 @@ const Home = () => {
         <section className="banner__section section--padding pt-0">
             <div className="container-fluid">
                 <div className="row row-cols-lg-3 row-cols-md-2 row-cols-sm-2 row-cols-1 mb--n28">
-                    <div className="col mb-28">
+                    {banners.filter(b => b.type === 'promo_row_2').slice(0, 3).map((banner, i) => (
+                    <div className="col mb-28" key={banner._id || i}>
                         <div className="banner__items">
-                            <Link to="/shop" className="banner__items--thumbnail position__relative"><img
-                                    className="banner__items--thumbnail__img" src="assets/img/banner/banner6.webp"
-                                    alt="banner-img" />
-                                <div className="banner__items--content__style2 right">
-                                    <h2 className="banner__items--content__style2--title">Single Stylish <br />
-                                        Mini Chair </h2>
-                                    <span className="banner__items--content__link primary__btn style2">Order Now</span>
-                                </div>
-                            </Link>
-                        </div>
-                    </div>
-                    <div className="col mb-28">
-                        <div className="banner__items">
-                            <Link to="/shop" className="banner__items--thumbnail position__relative"><img
-                                    className="banner__items--thumbnail__img" src="assets/img/banner/banner7.webp"
-                                    alt="banner-img" />
-                                <div className="banner__items--content__style2 right">
-                                    <h2 className="banner__items--content__style2--title">New Furniture <br />
-                                        Tree Planet </h2>
-                                    <span className="banner__items--content__link primary__btn style2">Order Now</span>
-                                </div>
-                            </Link>
-                        </div>
-                    </div>
-                    <div className="col mb-28">
-                        <div className="banner__items">
-                            <Link to="/shop" className="banner__items--thumbnail position__relative"><img
-                                    className="banner__items--thumbnail__img" src="assets/img/banner/banner8.webp"
-                                    alt="banner-img" />
+                            <Link to={banner.link || "/shop"} className="banner__items--thumbnail position__relative"><img
+                                    className="banner__items--thumbnail__img" src={getImageUrl(banner.image, 'assets/img/banner/banner7.webp')}
+                                    alt={banner.title} onError={e=>{e.target.onerror=null;e.target.src='assets/img/banner/banner7.webp'}} />
                                 <div className="banner__items--content__style2">
-                                    <h2 className="banner__items--content__style2--title">Single Stylish <br />
-                                        Mini Chair </h2>
-                                    <span className="banner__items--content__link primary__btn style2">Order Now</span>
+                                    <h2 className="banner__items--content__style2--title">{banner.title || 'Special Offer'}</h2>
+                                    <span className="banner__items--content__link primary__btn style2">{banner.btnText || 'Order Now'}</span>
                                 </div>
                             </Link>
                         </div>
                     </div>
+                    ))}
                 </div>
             </div>
         </section>
@@ -888,7 +834,7 @@ const Home = () => {
               </div>
               <div>
                 <h2 className="hig2-title">Follow Us on <span>Instagram</span></h2>
-                <p className="hig2-subtitle">@wooden_furniture_lucknow — Tag us to get featured!</p>
+                <p className="hig2-subtitle">{instagramHandle || '@wooden_furniture_lucknow'} — Tag us to get featured!</p>
               </div>
               <a className="hig2-follow" href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">
                 Follow

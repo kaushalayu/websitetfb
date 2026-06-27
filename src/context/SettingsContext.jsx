@@ -22,6 +22,7 @@ export const SettingsProvider = ({ children }) => {
     dealImage: '',
     bannerVideoUrl: '',
     instagramPosts: [],
+    instagramHandle: '@wooden_furniture_lucknow',
   })
 
   useEffect(() => {
