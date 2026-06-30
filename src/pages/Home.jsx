@@ -113,7 +113,7 @@ const ArtisanalSection = ({ products = [], dealEndDate, dealTitle, dealDesc, dea
                     </div>
                     <div className="hac-card__body">
                       <div className="hac-card__stars">
-                        {[1,2,3,4,5].map(s=><svg key={s} viewBox="0 0 24 24" fill="#f5a623" width="13" height="13"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>)}
+                        {[1,2,3,4,5].map(s=><svg key={s} viewBox="0 0 24 24" fill="#1E4D8C" width="13" height="13"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>)}
                       </div>
                       <h3 className="hac-card__title"><Link to="/shop">{p.title}</Link></h3>
                       <div className="hac-card__price-row">
@@ -242,7 +242,7 @@ const MostPopularSection = ({ products = [] }) => {
                 <div className="hpop-card__body">
                   <div className="hpop-card__stars">
                     {[1,2,3,4,5].map(s=>(
-                      <svg key={s} viewBox="0 0 24 24" fill="#f5a623" width="14" height="14"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                      <svg key={s} viewBox="0 0 24 24" fill="#1E4D8C" width="14" height="14"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                     ))}
                   </div>
                   <h3 className="hpop-card__title"><Link to={href}>{p.title}</Link></h3>
@@ -465,7 +465,7 @@ const Home = () => {
 
             <div className="hcat2-grid">
               {(categories.length > 0 ? categories : []).slice(0, 4).map((cat, i) => {
-                const CAT_COLORS = ['#8b5e3c','#4a6741','#3d5a80','#7a4f3a']
+                const CAT_COLORS = ['#1E4D8C','#2A5C9A','#3A6EBA','#1B3A6B']
                 const CAT_ICONS = [
                   <svg key="0" viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>,
                   <svg key="1" viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M2 4v16"/><path d="M2 8h20"/><path d="M22 4v16"/><path d="M6 8v12"/><path d="M18 8v12"/><rect x="6" y="12" width="12" height="4" rx="1"/></svg>,

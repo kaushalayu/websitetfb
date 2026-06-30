@@ -604,7 +604,7 @@
   font-size: 1.35rem; font-weight: 700; margin: 0; line-height: 1.35;
 }
 .product-title a { color: #000; text-decoration: none; transition: color 0.2s; }
-.product-title a:hover { color: #F5C518; }
+.product-title a:hover { color: #1E4D8C; }
 
 .product-rating { display: flex; align-items: center; justify-content: center; gap: 2px; margin: 5px 0; }
 
@@ -631,7 +631,7 @@
   cursor: pointer; transition: background 0.2s, transform 0.2s; width: 100%;
   text-align: center;
 }
-.btn-add-cart:hover { background: #F5C518; color: #000; transform: translateY(-2px); }
+.btn-add-cart:hover { background: #1E4D8C; color: #000; transform: translateY(-2px); }
 
 /* --- Skeleton --- */
 .product-card.skeleton { pointer-events: none; }
