@@ -149,13 +149,44 @@ const MostPopularSection = ({ products = [] }) => {
     { id:'lamps', label:'Lamps', slug:'lamps', icon:<svg key="l" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> },
   ]
   const tabDef = POP_TABS_DEF.find(t => t.id === activeTab) || POP_TABS_DEF[0]
-  const filtered = products.filter(p => p.category?.slug === tabDef.slug).slice(0, 4)
-  const tabProducts = filtered.length > 0 ? filtered : [
-    { title:'Royal Velvet Chair', salePrice:8499, price:11999, images:[{url:'assets/img/product/product1.webp'}], tags:['New'], slug:'' },
-    { title:'Nordic Lounge Chair', salePrice:9999, price:14999, images:[{url:'assets/img/product/product3.webp'}], tags:['Hot'], slug:'' },
-    { title:'Classic Windsor Chair', salePrice:5999, price:8499, images:[{url:'assets/img/product/product5.webp'}], tags:[], slug:'' },
-    { title:'Minimalist Desk Chair', salePrice:7499, price:10999, images:[{url:'assets/img/product/product7.webp'}], tags:['Sale'], slug:'' },
-  ]
+  const filtered = products.filter(p => {
+    if (!p.category) return false
+    const catSlug = typeof p.category === 'string' ? p.category : (p.category.slug || '')
+    return catSlug.toLowerCase() === tabDef.slug
+  }).slice(0, 4)
+  const FALLBACKS = {
+    chairs: [
+      { title:'Royal Velvet Chair', salePrice:8499, price:11999, images:[{url:'assets/img/product/product1.webp'}], tags:['New'], slug:'' },
+      { title:'Nordic Lounge Chair', salePrice:9999, price:14999, images:[{url:'assets/img/product/product3.webp'}], tags:['Hot'], slug:'' },
+      { title:'Classic Windsor Chair', salePrice:5999, price:8499, images:[{url:'assets/img/product/product5.webp'}], tags:[], slug:'' },
+      { title:'Minimalist Desk Chair', salePrice:7499, price:10999, images:[{url:'assets/img/product/product7.webp'}], tags:['Sale'], slug:'' },
+    ],
+    sofas: [
+      { title:'Luxury Velvet Sofa', salePrice:49999, price:64999, images:[{url:'assets/img/product/product2.webp'}], tags:['New'], slug:'' },
+      { title:'Modern Fabric Sofa', salePrice:35999, price:45999, images:[{url:'assets/img/product/product4.webp'}], tags:['Hot'], slug:'' },
+      { title:'Chesterfield Leather Sofa', salePrice:59999, price:79999, images:[{url:'assets/img/product/product6.webp'}], tags:[], slug:'' },
+      { title:'Sectional L-Shape Sofa', salePrice:42999, price:54999, images:[{url:'assets/img/product/product8.webp'}], tags:['Sale'], slug:'' },
+    ],
+    beds: [
+      { title:'King Size Bed', salePrice:38999, price:49999, images:[{url:'assets/img/product/product9.webp'}], tags:['New'], slug:'' },
+      { title:'Queen Size Poster Bed', salePrice:45999, price:58999, images:[{url:'assets/img/product/product10.webp'}], tags:['Hot'], slug:'' },
+      { title:'Wooden Bunk Bed', salePrice:24999, price:32999, images:[{url:'assets/img/product/product7.webp'}], tags:[], slug:'' },
+      { title:'Storage Bed with Drawers', salePrice:32999, price:42999, images:[{url:'assets/img/product/product5.webp'}], tags:['Sale'], slug:'' },
+    ],
+    tables: [
+      { title:'Teak Dining Table', salePrice:32999, price:42000, images:[{url:'assets/img/product/product1.webp'}], tags:['New'], slug:'' },
+      { title:'Glass Coffee Table', salePrice:14999, price:19999, images:[{url:'assets/img/product/product3.webp'}], tags:['Hot'], slug:'' },
+      { title:'Solid Wood Study Table', salePrice:11999, price:15999, images:[{url:'assets/img/product/product5.webp'}], tags:[], slug:'' },
+      { title:'Side Table Set', salePrice:8999, price:12999, images:[{url:'assets/img/product/product7.webp'}], tags:['Sale'], slug:'' },
+    ],
+    lamps: [
+      { title:'Brass Table Lamp', salePrice:3499, price:4999, images:[{url:'assets/img/product/product2.webp'}], tags:['New'], slug:'' },
+      { title:'Floor Reading Lamp', salePrice:5499, price:7499, images:[{url:'assets/img/product/product4.webp'}], tags:['Hot'], slug:'' },
+      { title:'Crystal Chandelier', salePrice:12999, price:16999, images:[{url:'assets/img/product/product6.webp'}], tags:[], slug:'' },
+      { title:'LED Desk Lamp', salePrice:2499, price:3499, images:[{url:'assets/img/product/product8.webp'}], tags:['Sale'], slug:'' },
+    ],
+  }
+  const tabProducts = filtered.length > 0 ? filtered : (FALLBACKS[tabDef.id] || FALLBACKS.chairs)
   return (
     <section className="hpop-section hpop-reveal">
       <div className="container">
@@ -727,7 +758,7 @@ const Home = () => {
                 <div className={`hts-card ${i % 2 === 0 ? 'hts-reveal--left' : 'hts-reveal--right'}`} key={t._id || i}>
                   <div className="hts-stars">
                     {Array.from({ length: 5 }, (_, si) => (
-                      <svg key={si} width="12" height="12" viewBox="0 0 24 24" fill={si < (t.rating || 5) ? "#C9A06C" : "currentColor"} opacity={si < (t.rating || 5) ? 1 : 0.2}>
+                      <svg key={si} width="12" height="12" viewBox="0 0 24 24" fill={si < (t.rating || 5) ? "#1E4D8C" : "currentColor"} opacity={si < (t.rating || 5) ? 1 : 0.2}>
                         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
                       </svg>
                     ))}
