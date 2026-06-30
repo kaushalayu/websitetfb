@@ -727,7 +727,7 @@ const Home = () => {
                 <div className={`hts-card ${i % 2 === 0 ? 'hts-reveal--left' : 'hts-reveal--right'}`} key={t._id || i}>
                   <div className="hts-stars">
                     {Array.from({ length: 5 }, (_, si) => (
-                      <svg key={si} width="12" height="12" viewBox="0 0 24 24" fill={si < (t.rating || 5) ? "#F5C518" : "currentColor"} opacity={si < (t.rating || 5) ? 1 : 0.2}>
+                      <svg key={si} width="12" height="12" viewBox="0 0 24 24" fill={si < (t.rating || 5) ? "#C9A06C" : "currentColor"} opacity={si < (t.rating || 5) ? 1 : 0.2}>
                         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
                       </svg>
                     ))}

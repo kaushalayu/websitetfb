@@ -1,11 +1,11 @@
 /* ===== Custom CSS ===== */
 :root {
-  --yellow: #F5C518;
-  --yellow-dark: #D4A017;
-  --yellow-light: #FFF3C4;
-  --brown: #d4a373;
-  --brown-dark: #c4956a;
-  --dark: #121a25;
+  --yellow: #C9A06C;
+  --yellow-dark: #A0784A;
+  --yellow-light: #F5E6D3;
+  --brown: #B8860B;
+  --brown-dark: #996515;
+  --dark: #121A25;
 }
 
 /* ===== Hero Slider Overrides ===== */
@@ -208,8 +208,8 @@
 }
 
 @keyframes pulseGlow {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(245, 197, 24, 0.4); }
-  50% { box-shadow: 0 0 0 12px rgba(245, 197, 24, 0); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(201, 160, 108, 0.4); }
+  50% { box-shadow: 0 0 0 12px rgba(201, 160, 108, 0); }
 }
 
 @keyframes shimmer {
