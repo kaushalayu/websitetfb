@@ -63,7 +63,7 @@ const ArtisanalSection = ({ products = [], dealEndDate, dealTitle, dealDesc, dea
 
           {/* Left — Deal Spotlight */}
           <div className="hac-spotlight">
-            <img src={getImageUrl(dealImage, 'assets/img/banner/banner9.webp')} alt="Deal" className="hac-spotlight__bg" onError={e=>{e.target.onerror=null;e.target.src='assets/img/banner/banner9.webp'}} />
+            <img src={getImageUrl(dealImage, 'assets/img/banner/banner9.webp')} alt="Deal" className="hac-spotlight__bg" loading="lazy" onError={e=>{e.target.onerror=null;e.target.src='assets/img/banner/banner9.webp'}} />
             <div className="hac-spotlight__overlay" />
             <div className="hac-spotlight__content">
               <span className="hac-spotlight__label">Deal Of The Week</span>
@@ -242,7 +242,7 @@ const MostPopularSection = ({ products = [] }) => {
                 <div className="hpop-card__body">
                   <div className="hpop-card__stars">
                     {[1,2,3,4,5].map(s=>(
-                      <svg key={s} viewBox="0 0 24 24" fill="#1E4D8C" width="14" height="14"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                      <svg key={s} viewBox="0 0 24 24" fill="#C9A06C" width="14" height="14"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                     ))}
                   </div>
                   <h3 className="hpop-card__title"><Link to={href}>{p.title}</Link></h3>
@@ -332,7 +332,7 @@ const Home = () => {
     if (!els.length || !window.IntersectionObserver) return
     const obs = new IntersectionObserver(entries => {
       entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-visible'); obs.unobserve(e.target) } })
-    }, { threshold: 0.15 })
+    }, { threshold: 0.1 })
     els.forEach(el => obs.observe(el))
     return () => obs.disconnect()
   }, [loading])
@@ -367,9 +367,43 @@ const Home = () => {
                 <div className="swiper__nav--btn swiper-button-prev"></div>
             </div>
         </section>
-        
 
-        
+        {/* ── Trust Bar ── */}
+        <div className="trust-bar">
+          <div className="container">
+            <div className="trust-bar__inner">
+              <div className="trust-bar__item">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                <div>
+                  <strong>5-Year Warranty</strong>
+                  <span>On all solid wood furniture</span>
+                </div>
+              </div>
+              <div className="trust-bar__item">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                <div>
+                  <strong>Free Delivery</strong>
+                  <span>Lucknow & nearby areas</span>
+                </div>
+              </div>
+              <div className="trust-bar__item">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                <div>
+                  <strong>10,000+ Happy Homes</strong>
+                  <span>Trusted by families since 2009</span>
+                </div>
+              </div>
+              <div className="trust-bar__item">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                <div>
+                  <strong>100% Solid Wood</strong>
+                  <span>No particle board, ever</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* ══════════════════════════════════════════════
             SECTION 1 — Featured Products Collection
         ══════════════════════════════════════════════ */}
@@ -508,7 +542,7 @@ const Home = () => {
                         <div className="banner__items">
                             <Link to={banner.link || "/shop"} className="banner__items--thumbnail position__relative"><img
                                     className="banner__items--thumbnail__img" src={getImageUrl(banner.image, 'assets/img/banner/banner6.webp')}
-                                    alt={banner.title} onError={e=>{e.target.onerror=null;e.target.src='assets/img/banner/banner6.webp'}} />
+                                    alt={banner.title} loading="lazy" onError={e=>{e.target.onerror=null;e.target.src='assets/img/banner/banner6.webp'}} />
                                 <div className="banner__items--content__style2">
                                     <h2 className="banner__items--content__style2--title">{banner.title || 'Special Offer'}</h2>
                                     <span className="banner__items--content__link primary__btn style2">{banner.btnText || 'Order Now'}</span>
@@ -526,26 +560,7 @@ const Home = () => {
         ══════════════════════════════════════════════ */}
         <ArtisanalSection products={allProducts} dealEndDate={dealEndDate} dealTitle={dealTitle} dealDesc={dealDesc} dealImage={dealImage} />
 
-        <section className="banner__section section--padding pt-0">
-            <div className="container-fluid">
-                <div className="row row-cols-lg-3 row-cols-md-2 row-cols-sm-2 row-cols-1 mb--n28">
-                    {banners.filter(b => b.type === 'promo_row_2').slice(0, 3).map((banner, i) => (
-                    <div className="col mb-28" key={banner._id || i}>
-                        <div className="banner__items">
-                            <Link to={banner.link || "/shop"} className="banner__items--thumbnail position__relative"><img
-                                    className="banner__items--thumbnail__img" src={getImageUrl(banner.image, 'assets/img/banner/banner7.webp')}
-                                    alt={banner.title} onError={e=>{e.target.onerror=null;e.target.src='assets/img/banner/banner7.webp'}} />
-                                <div className="banner__items--content__style2">
-                                    <h2 className="banner__items--content__style2--title">{banner.title || 'Special Offer'}</h2>
-                                    <span className="banner__items--content__link primary__btn style2">{banner.btnText || 'Order Now'}</span>
-                                </div>
-                            </Link>
-                        </div>
-                    </div>
-                    ))}
-                </div>
-            </div>
-        </section>
+
         
 
         
@@ -557,7 +572,7 @@ const Home = () => {
                             src={bannerVideoUrl} style={{ objectFit: 'cover', width: '100%', height: '100%' }} />
                     ) : (
                         <img className="banner__video--thumbnail__img display-block" src="assets/img/banner/banner-bg1.webp"
-                            alt="banner-bideo-thumbnail" />
+                            alt="banner-bideo-thumbnail" loading="lazy" />
                     )}
                     <div className="bideo__play">
                         <a className="bideo__play--icon glightbox" data-gallery="video" href={bannerVideoUrl || 'https://vimeo.com/115041822'}>
@@ -752,13 +767,13 @@ const Home = () => {
             <div className="hts-grid">
               {(testimonials.length > 0 ? testimonials : [
                 { _id:'t1', name:'Priya Sharma', role:'Homeowner, Gomti Nagar', content:'Absolutely stunning furniture! The teak wood dining set exceeded my expectations. Craftsmanship is world-class.', rating:5, image:'assets/img/other/testimonial-thumb1.webp' },
-                { _id:'t2', name:'Rahul Verma', role:'Interior Designer', content:'I recommend them to all my clients. Solid wood, honest pricing, and on-time delivery every single time.', rating:5, image:'assets/img/other/testimonial-thumb2.webp' },
-                { _id:'t3', name:'Anjali Gupta', role:'Architect', content:'The custom sofa set they made for our project was perfect. Great attention to detail and finish.', rating:5, image:'assets/img/other/testimonial-thumb3.webp' },
+                { _id:'t2', name:'Rahul Verma', role:'Interior Designer, Hazratganj', content:'I recommend them to all my clients. Solid wood, honest pricing, and on-time delivery every single time.', rating:4, image:'assets/img/other/testimonial-thumb2.webp' },
+                { _id:'t3', name:'Anjali Gupta', role:'Architect, Aliganj', content:'The custom sofa set they made for our project was perfect. Great attention to detail and finish.', rating:5, image:'assets/img/other/testimonial-thumb3.webp' },
               ]).map((t, i) => (
                 <div className={`hts-card ${i % 2 === 0 ? 'hts-reveal--left' : 'hts-reveal--right'}`} key={t._id || i}>
                   <div className="hts-stars">
                     {Array.from({ length: 5 }, (_, si) => (
-                      <svg key={si} width="12" height="12" viewBox="0 0 24 24" fill={si < (t.rating || 5) ? "#1E4D8C" : "currentColor"} opacity={si < (t.rating || 5) ? 1 : 0.2}>
+                      <svg key={si} width="12" height="12" viewBox="0 0 24 24" fill={si < (t.rating || 5) ? "#C9A06C" : "currentColor"} opacity={si < (t.rating || 5) ? 1 : 0.2}>
                         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
                       </svg>
                     ))}
@@ -766,7 +781,7 @@ const Home = () => {
                   <p className="hts-text">"{t.content}"</p>
                   <div className="hts-author">
                     <img src={getImageUrl(t.image, 'assets/img/other/testimonial-thumb1.webp')} alt={t.name}
-                      className="hts-avatar" onError={e=>{e.target.onerror=null;e.target.src='assets/img/other/testimonial-thumb1.webp'}} />
+                      className="hts-avatar" loading="lazy" onError={e=>{e.target.onerror=null;e.target.src='assets/img/other/testimonial-thumb1.webp'}} />
                     <div>
                       <h4 className="hts-name">{t.name}</h4>
                       {t.role && <span className="hts-role">{t.role}</span>}

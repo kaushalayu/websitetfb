@@ -72,10 +72,11 @@ const Blog = () => {
                     {posts.map(post => (
                       <article className="blog-card" key={post._id}>
                         <Link className="blog-card__img-wrap" to={`/blog-details?slug=${post.slug}`}>
-                          <img
+                           <img
                             className="blog-card__img"
                             src={getImageUrl(post.featuredImage, 'assets/img/blog/blog5.webp')}
                             alt={post.title}
+                            loading="lazy"
                           />
                         </Link>
                         <div className="blog-card__body">
@@ -167,6 +168,7 @@ const Blog = () => {
                           className="blog-sidebar__recent-img"
                           src={getImageUrl(rp.featuredImage, 'assets/img/product/small-product1.webp')}
                           alt={rp.title}
+                          loading="lazy"
                         />
                         <div className="blog-sidebar__recent-content">
                           <h4 className="blog-sidebar__recent-title">

@@ -58,13 +58,13 @@ const QuickViewModal = ({ slug, onClose }) => {
           <div className="sqv-grid">
             <div className="sqv-images">
               <div className="sqv-main-img">
-                <img src={getImageUrl(images[activeImage]?.url || images[activeImage], 'assets/img/product/product1.webp')} alt={product.title} onError={(e)=>{e.target.onerror=null;e.target.src='assets/img/product/product1.webp'}} />
+                <img src={getImageUrl(images[activeImage]?.url || images[activeImage], 'assets/img/product/product1.webp')} alt={product.title} loading="lazy" onError={(e)=>{e.target.onerror=null;e.target.src='assets/img/product/product1.webp'}} />
               </div>
               {images.length > 1 && (
                 <div className="sqv-thumbs">
                   {images.map((img, i) => (
                     <button key={i} className={`sqv-thumb ${i === activeImage ? 'active' : ''}`} onClick={() => setActiveImage(i)}>
-                      <img src={getImageUrl(img.url || img)} alt={`${product.title} ${i + 1}`} />
+                      <img src={getImageUrl(img.url || img)} alt={`${product.title} ${i + 1}`} loading="lazy" />
                     </button>
                   ))}
                 </div>
@@ -258,7 +258,7 @@ const Shop = () => {
               <div className="sp-widget">
                 <h4 className="sp-widget__title">Search</h4>
                 <form className="sp-search-form" onSubmit={handleSearch}>
-                  <input type="text" name="search" defaultValue={search} placeholder="Search products…" />
+                  <input type="text" name="search" key={search} defaultValue={search} placeholder="Search products…" />
                   <button type="submit" aria-label="Search">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
                   </button>
@@ -296,12 +296,12 @@ const Shop = () => {
                   <div className="sp-price-inputs">
                     <label>
                       <span>Min ₹</span>
-                      <input name="minPrice" type="number" defaultValue={minPrice} placeholder="0" min="0" />
+                      <input name="minPrice" type="number" key={`min-${minPrice}`} defaultValue={minPrice} placeholder="0" min="0" />
                     </label>
                     <span className="sp-price-sep">—</span>
                     <label>
                       <span>Max ₹</span>
-                      <input name="maxPrice" type="number" defaultValue={maxPrice} placeholder="Any" min="0" />
+                      <input name="maxPrice" type="number" key={`max-${maxPrice}`} defaultValue={maxPrice} placeholder="Any" min="0" />
                     </label>
                   </div>
                   <button type="submit" className="sp-btn-apply">Apply Filter</button>

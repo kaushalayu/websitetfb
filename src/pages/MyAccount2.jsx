@@ -168,14 +168,14 @@ const MyAccount2 = () => {
                       <h3 className="account__content--title mb-0">Saved Addresses</h3>
                       {!showForm && (
                         <button className="new__address--btn" onClick={openAddForm}
-                          style={{ padding: '10px 25px', background: 'var(--secondary-color)', color: '#fff', border: 'none', borderRadius: 6, fontSize: '1.4rem', fontWeight: 600, cursor: 'pointer' }}>
+                          style={{ padding: '10px 25px', background: 'var(--secondary-color)', color: '#fff', border: 'none', borderRadius: 6, fontSize: '14px', fontWeight: 600, cursor: 'pointer' }}>
                           + Add New Address
                         </button>
                       )}
                     </div>
 
                     {error && (
-                      <div style={{ padding: '12px 16px', background: '#fff0f0', color: '#d32f2f', borderRadius: 6, marginBottom: 20, fontSize: '1.3rem' }}>
+                      <div style={{ padding: '12px 16px', background: '#fff0f0', color: '#d32f2f', borderRadius: 6, marginBottom: 20, fontSize: '14px' }}>
                         {error}
                       </div>
                     )}
@@ -215,7 +215,7 @@ const MyAccount2 = () => {
                           </div>
                           <div className="form-group full-width" style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                             <input type="checkbox" name="isDefault" id="isDefault" checked={form.isDefault} onChange={handleChange} style={{ width: 18, height: 18 }} />
-                            <label htmlFor="isDefault" style={{ margin: 0, fontSize: '1.4rem' }}>Set as default address</label>
+                            <label htmlFor="isDefault" style={{ margin: 0, fontSize: '14px' }}>Set as default address</label>
                           </div>
                         </div>
                         <div className="account__details--footer d-flex">
@@ -247,15 +247,15 @@ const MyAccount2 = () => {
                               {addr.country}
                             </p>
                             <div className="account__address--card-actions">
-                              <button onClick={() => openEditForm(index)} style={{ background: 'none', border: '1px solid var(--border-color)', padding: '6px 16px', borderRadius: 4, cursor: 'pointer', fontSize: '1.3rem' }}>
+                              <button onClick={() => openEditForm(index)} style={{ background: 'none', border: '1px solid var(--border-color)', padding: '6px 16px', borderRadius: 4, cursor: 'pointer', fontSize: '14px' }}>
                                 Edit
                               </button>
                               {!addr.isDefault && (
-                                <button onClick={() => handleSetDefault(index)} style={{ background: 'none', border: '1px solid var(--border-color)', padding: '6px 16px', borderRadius: 4, cursor: 'pointer', fontSize: '1.3rem' }}>
+                                <button onClick={() => handleSetDefault(index)} style={{ background: 'none', border: '1px solid var(--border-color)', padding: '6px 16px', borderRadius: 4, cursor: 'pointer', fontSize: '14px' }}>
                                   Set Default
                                 </button>
                               )}
-                              <button onClick={() => handleDelete(index)} style={{ background: 'none', border: '1px solid #d32f2f', color: '#d32f2f', padding: '6px 16px', borderRadius: 4, cursor: 'pointer', fontSize: '1.3rem' }}>
+                              <button onClick={() => handleDelete(index)} style={{ background: 'none', border: '1px solid #d32f2f', color: '#d32f2f', padding: '6px 16px', borderRadius: 4, cursor: 'pointer', fontSize: '14px' }}>
                                 Delete
                               </button>
                             </div>

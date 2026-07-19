@@ -90,7 +90,7 @@ const Wishlist = () => {
 
                                                 <div className="cart__thumbnail">
 
-                                                    <Link to={`/product-variable?slug=${product.slug}`} ><img className="border-radius-5" src={getImageUrl(product.images?.[0]?.url, 'assets/img/product/product1.webp')} alt={product.title} onError={e=>{e.target.onerror=null;e.target.src='assets/img/product/product1.webp'}} /></Link>
+                                                    <Link to={`/product-variable?slug=${product.slug}`} ><img className="border-radius-5" src={getImageUrl(product.images?.[0]?.url, 'assets/img/product/product1.webp')} alt={product.title} loading="lazy" onError={e=>{e.target.onerror=null;e.target.src='assets/img/product/product1.webp'}} /></Link>
 
                                                 </div>
 
@@ -169,31 +169,31 @@ const Wishlist = () => {
 
                             <div className="brand__logo--items">
 
-                                <img className="brand__logo--items__thumbnail--img" src="assets/img/logo/brand-logo1.webp" alt="brand logo" />
+                                <img className="brand__logo--items__thumbnail--img" src="assets/img/logo/brand-logo1.webp" alt="brand logo" loading="lazy" />
 
                             </div>
 
                             <div className="brand__logo--items">
 
-                                <img className="brand__logo--items__thumbnail--img" src="assets/img/logo/brand-logo2.webp" alt="brand logo" />
+                                <img className="brand__logo--items__thumbnail--img" src="assets/img/logo/brand-logo2.webp" alt="brand logo" loading="lazy" />
 
                             </div>
 
                             <div className="brand__logo--items">
 
-                                <img className="brand__logo--items__thumbnail--img" src="assets/img/logo/brand-logo3.webp" alt="brand logo" />
+                                <img className="brand__logo--items__thumbnail--img" src="assets/img/logo/brand-logo3.webp" alt="brand logo" loading="lazy" />
 
                             </div>
 
                             <div className="brand__logo--items">
 
-                                <img className="brand__logo--items__thumbnail--img" src="assets/img/logo/brand-logo4.webp" alt="brand logo" />
+                                <img className="brand__logo--items__thumbnail--img" src="assets/img/logo/brand-logo4.webp" alt="brand logo" loading="lazy" />
 
                             </div>
 
                             <div className="brand__logo--items">
 
-                                <img className="brand__logo--items__thumbnail--img" src="assets/img/logo/brand-logo5.webp" alt="brand logo" />
+                                <img className="brand__logo--items__thumbnail--img" src="assets/img/logo/brand-logo5.webp" alt="brand logo" loading="lazy" />
 
                             </div>
 

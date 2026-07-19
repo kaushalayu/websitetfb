@@ -71,7 +71,7 @@ const Login = () => {
           <div className="row justify-content-center">
             <div className="col-lg-6 col-md-8">
               {error && (
-                <div className="alert alert-danger" style={{ padding: '12px 16px', borderRadius: 8, marginBottom: 20, fontSize: '1.4rem', background: '#fde8e8', color: '#c0392b', border: '1px solid #f5c6cb' }}>
+                <div className="alert alert-danger" style={{ padding: '12px 16px', borderRadius: 8, marginBottom: 20, fontSize: '14px', background: '#fde8e8', color: '#c0392b', border: '1px solid #f5c6cb' }}>
                   {error}
                 </div>
               )}

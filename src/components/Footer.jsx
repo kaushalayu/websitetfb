@@ -45,7 +45,7 @@ const Footer = () => {
                 </h2>
                 <div className="footer__widget--inner">
                   <Link className="footer__logo" to="/"><img src={getImageUrl(siteLogo, 'assets/img/logo/nav-log.webp')}
-                    alt={siteName}/></Link>
+                    alt={siteName} loading="lazy"/></Link>
                   <p className="footer__widget--desc">{siteName} - Lucknow's <br/> premier destination for premium quality furniture. <br/> We bring elegance to your home.</p>
                     <div className="footer__social">
                       <ul className="social__shear d-flex">
@@ -204,7 +204,7 @@ const Footer = () => {
               Boutique</p>
             <div className="footer__payment text-right">
               <img className="footer__payment--visa__card display-block" src="assets/img/other/payment-visa-card.webp"
-                alt="visa-card"/>
+                alt="visa-card" loading="lazy"/>
             </div>
           </div>
         </div>

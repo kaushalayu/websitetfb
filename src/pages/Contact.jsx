@@ -203,7 +203,7 @@ const Contact = () => {
                       )}
                       {/* fallback if no socials set */}
                       {!facebook && !twitter && !instagram && !youtube && !skype && (
-                        <li><span className="contact__info--content__desc text-white" style={{opacity:.7, fontSize:'0.9rem'}}>Not configured yet</span></li>
+                        <li><span className="contact__info--content__desc text-white" style={{opacity:.7, fontSize:'14px'}}>Not configured yet</span></li>
                       )}
                     </ul>
                   </div>

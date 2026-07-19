@@ -29,6 +29,7 @@ const NewsletterBanner = ({ bgImage, fluid, noGapTop, imgClass }) => {
               className={`newsletter__banner--bg__img${imgClass ? " " + imgClass : ""}`}
               src={img}
               alt=""
+              loading="lazy"
             />
             <div className="newsletter__banner--overlay" />
           </div>

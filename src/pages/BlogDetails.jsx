@@ -172,7 +172,7 @@ const BlogDetails = () => {
 
                 {post.featuredImage && (
                   <div className="blog__thumbnail mb-30">
-                    <img className="blog__thumbnail--img" src={getImageUrl(post.featuredImage, 'assets/img/blog/blog1.webp')} alt={post.title} />
+                    <img className="blog__thumbnail--img" src={getImageUrl(post.featuredImage, 'assets/img/blog/blog1.webp')} alt={post.title} loading="lazy" />
                   </div>
                 )}
 
@@ -225,7 +225,7 @@ const BlogDetails = () => {
                           <div className="related__post--items">
                             <div className="related__post--thumbnail">
                               <Link to={`/blog-details?slug=${rp.slug}`}>
-                                <img className="related__post--img" src={getImageUrl(rp.featuredImage, 'assets/img/blog/related-post1.webp')} alt={rp.title} />
+                                <img className="related__post--img" src={getImageUrl(rp.featuredImage, 'assets/img/blog/related-post1.webp')} alt={rp.title} loading="lazy" />
                               </Link>
                             </div>
                             <div className="related__post--text">
@@ -251,7 +251,7 @@ const BlogDetails = () => {
                         comments.map((comment, i) => (
                           <div key={comment._id || i} className="reviews__comment--list">
                             <div className="reviews__comment--avatar">
-                              <img src={getImageUrl(comment.avatar, "assets/img/other/comment-thumb1.webp")} alt={comment.name} />
+                              <img src={getImageUrl(comment.avatar, "assets/img/other/comment-thumb1.webp")} alt={comment.name} loading="lazy" />
                             </div>
                             <div className="reviews__comment--content">
                               <div className="reviews__comment--content__head">
@@ -313,7 +313,7 @@ const BlogDetails = () => {
                         <div className="recent__post--item d-flex align-items-center" key={rp._id}>
                           <div className="recent__post--thumb">
                             <Link to={`/blog-details?slug=${rp.slug}`}>
-                              <img src={getImageUrl(rp.featuredImage, 'assets/img/product/small-product1.webp')} alt={rp.title} />
+                              <img src={getImageUrl(rp.featuredImage, 'assets/img/product/small-product1.webp')} alt={rp.title} loading="lazy" />
                             </Link>
                           </div>
                           <div className="recent__post--info">

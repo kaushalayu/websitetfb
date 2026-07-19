@@ -89,10 +89,10 @@ const About = () => {
             <div className="col-lg-6">
               <div className="about__thumbnail d-flex">
                 <div className="about__thumbnail--items">
-                  <img className="about__thumbnail--img border-radius-5 display-block" src="assets/img/other/about-thumb-list1.webp" alt="about-thumbnail" />
+                  <img className="about__thumbnail--img border-radius-5 display-block" src="assets/img/other/about-thumb-list1.webp" alt="about-thumbnail" loading="lazy" />
                 </div>
                 <div className="about__thumbnail--items position__relative">
-                  <img className="about__thumbnail--img border-radius-5 display-block" src="assets/img/other/about-thumb-list2.webp" alt="about-thumbnail" />
+                  <img className="about__thumbnail--img border-radius-5 display-block" src="assets/img/other/about-thumb-list2.webp" alt="about-thumbnail" loading="lazy" />
                   <div className="banner__bideo--play about__thumbnail--play">
                     <a className="bideo__play--icon glightbox" data-gallery="video" href="https://vimeo.com/115041822">
                       <svg id="play" xmlns="http://www.w3.org/2000/svg" width="46.302" height="46.302" viewBox="0 0 46.302 46.302">
@@ -130,7 +130,7 @@ const About = () => {
                 <div className="about__author position__relative">
                   <h4 className="about__author--name">Arjun Mehta</h4>
                   <span className="about__author--rank">Founder & Master Craftsman</span>
-                  <img className="about__author--signature" src="assets/img/icon/signature.webp" alt="signature" />
+                   <img className="about__author--signature" src="assets/img/icon/signature.webp" alt="signature" loading="lazy" />
                 </div>
               </div>
             </div>
@@ -168,7 +168,7 @@ const About = () => {
                   <div className="col-lg-3 col-md-4 col-sm-6 col-6 custom-col" key={member._id}>
                     <div className="team__items text-center">
                       <div className="team__thumbnail">
-                        <img className="team__thumbnail--img border-radius-50 display-block" src={getImageUrl(member.image, 'assets/img/other/team1.webp')} alt={member.name} />
+                        <img className="team__thumbnail--img border-radius-50 display-block" src={getImageUrl(member.image, 'assets/img/other/team1.webp')} alt={member.name} loading="lazy" />
                       </div>
                       <div className="team__content">
                         <h3 className="team__content--title">{member.name}</h3>

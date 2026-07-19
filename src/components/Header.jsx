@@ -129,7 +129,7 @@ const Header = () => {
         <div className="offcanvas__inner">
           <div className="offcanvas__logo">
             <Link className="offcanvas__logo_link" to="/">
-              <img src={getImageUrl(siteLogo, 'assets/img/logo/nav-log.webp')} alt={siteName} />
+              <img src={getImageUrl(siteLogo, 'assets/img/logo/nav-log.webp')} alt={siteName} loading="lazy" />
             </Link>
             <button className="offcanvas__close--btn" aria-label="offcanvas close btn">close</button>
           </div>
@@ -301,7 +301,7 @@ const Header = () => {
             items.map((item) => (
               <div key={item.variantKey} className="minicart__product--items d-flex">
                 <div className="minicart__thumbnail">
-                  <Link to={`/product-variable?slug=${item.product.slug || item.product._id}`}><img src={getImageUrl(item.product.images?.[0]?.url, 'assets/img/product/product1.webp')} alt={item.product.title} /></Link>
+                  <Link to={`/product-variable?slug=${item.product.slug || item.product._id}`}><img src={getImageUrl(item.product.images?.[0]?.url, 'assets/img/product/product1.webp')} alt={item.product.title} loading="lazy" /></Link>
                 </div>
                 <div className="minicart__text">
                   <h4 className="minicart__subtitle"><Link to={`/product-variable?slug=${item.product.slug || item.product._id}`}>{item.product.title}</Link></h4>
