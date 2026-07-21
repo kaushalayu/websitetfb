@@ -213,25 +213,24 @@ const Shop = () => {
     <main className="sp-page">
       {quickViewSlug && <QuickViewModal slug={quickViewSlug} onClose={() => setQuickViewSlug(null)} />}
 
-      {/* ── Hero Breadcrumb ── */}
-      <section className="sp-hero">
-        <div className="sp-hero__bg" />
+      {/* ── Breadcrumb ── */}
+      <section className="breadcrumb__section breadcrumb__bg">
         <div className="container">
-          <div className="sp-hero__content">
-            <h1 className="sp-hero__title">
-              {category ? (categories.find(c => c.slug === category)?.name || 'Shop') : 'Our Collection'}
-            </h1>
-            <nav className="sp-breadcrumb" aria-label="breadcrumb">
-              <Link to="/">Home</Link>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="9 18 15 12 9 6"/></svg>
-              <span>Shop</span>
-              {category && (
-                <>
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="9 18 15 12 9 6"/></svg>
-                  <span>{categories.find(c => c.slug === category)?.name || category}</span>
-                </>
-              )}
-            </nav>
+          <div className="row row-cols-1">
+            <div className="col">
+              <div className="breadcrumb__content">
+                <h1 className="breadcrumb__content--title text-white mb-10">
+                  {category ? (categories.find(c => c.slug === category)?.name || 'Shop') : 'Our Collection'}
+                </h1>
+                <ul className="breadcrumb__content--menu d-flex">
+                  <li className="breadcrumb__content--menu__items"><Link className="text-white" to="/">Home</Link></li>
+                  <li className="breadcrumb__content--menu__items"><span className="text-white">Shop</span></li>
+                  {category && (
+                    <li className="breadcrumb__content--menu__items"><span className="text-white">{categories.find(c => c.slug === category)?.name || category}</span></li>
+                  )}
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
       </section>

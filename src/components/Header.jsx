@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { getImageUrl } from '../services/api'
 import { useAuth } from '../context/AuthContext'
@@ -9,7 +10,18 @@ const Header = () => {
   const { user } = useAuth()
   const { items, totalItems, subtotal, removeItem, updateQuantity } = useCart()
   const { items: wishlistItems } = useWishlist()
-  const { siteLogo, siteName } = useSettings()
+  const { siteLogo, siteName, favicon } = useSettings()
+
+  useEffect(() => {
+    if (!favicon) return
+    let link = document.querySelector("link[rel~='shortcut icon']")
+    if (!link) {
+      link = document.createElement('link')
+      link.rel = 'shortcut icon'
+      document.head.appendChild(link)
+    }
+    link.href = getImageUrl(favicon)
+  }, [favicon])
 
   return (
     <>

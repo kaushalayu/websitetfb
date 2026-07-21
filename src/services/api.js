@@ -154,4 +154,8 @@ export const settingsAPI = {
   get: () => handle(api.get('/settings')),
 }
 
+export const portfolioAPI = {
+  list: () => handle(api.get('/portfolio')),
+}
+
 export default api

@@ -3,11 +3,83 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { bannerAPI, productAPI, testimonialAPI, blogAPI, categoryAPI, getImageUrl } from '../services/api'
 import { useSettings } from '../context/SettingsContext'
-import NewsletterBanner from '../components/NewsletterBanner'
+import { newsletterAPI } from '../services/api'
 
 /* ─── Artisanal Wooden Furniture Section ─── */
-const ArtisanalSection = ({ products = [], dealEndDate, dealTitle, dealDesc, dealImage }) => {
-  // Timer: use dealEndDate from settings via prop, fallback to 7 days from now
+const ArtisanalSection = ({ products = [] }) => {
+
+  const FALLBACK = [
+    { title:'Royal Wooden Chair', price:12999, old:16999, badge:'New',  img1:'assets/img/product/product1.webp', img2:'assets/img/product/product2.webp' },
+    { title:'Brass Table Lamp',   price:13499, old:17999, badge:null,   img1:'assets/img/product/product3.webp', img2:'assets/img/product/product4.webp' },
+    { title:'Ergonomic Chair',    price:13999, old:16499, badge:'New',  img1:'assets/img/product/product5.webp', img2:'assets/img/product/product6.webp' },
+  ]
+
+  const displayProducts = products.length >= 3
+    ? products.slice(0, 3).map(p => ({
+        title: p.title,
+        price: p.salePrice || p.price,
+        old:   p.salePrice ? p.price : null,
+        badge: p.tags?.[0] || null,
+        img1:  getImageUrl(p.images?.[0]?.url, 'assets/img/product/product1.webp'),
+        img2:  getImageUrl(p.images?.[1]?.url || p.images?.[0]?.url, 'assets/img/product/product2.webp'),
+        slug:  p.slug,
+      }))
+    : FALLBACK
+
+  return (
+    <section className="hac-section hac-reveal">
+      <div className="container">
+        <div className="hac-header" style={{ textAlign:'center', marginBottom:36 }}>
+          <span className="hac-overline" style={{ display:'block', fontFamily:'"Josefin Sans",sans-serif', fontSize:12, fontWeight:800, letterSpacing:'.18em', textTransform:'uppercase', color:'var(--gold)', marginBottom:6 }}>Artisanal Carving</span>
+          <h2 className="hac-title" style={{ fontFamily:"'Playfair Display',Georgia,serif", fontSize:'clamp(26px,3.5vw,38px)', fontWeight:800, color:'#1a1209', lineHeight:1.15, margin:'0 0 10px' }}>Wooden <em style={{ fontStyle:'normal', color:'var(--gold)' }}>Furniture</em></h2>
+          <p className="hac-subtitle" style={{ fontSize:14, color:'#5A6678', maxWidth:480, margin:'0 auto' }}>Luxury handcrafted Sheesham &amp; Teak wood furniture for your home.</p>
+        </div>
+        <div className="hac-grid" style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:20 }}>
+          {displayProducts.map((p,i) => {
+            const disc = Math.round((1 - p.price/p.old)*100)
+            return (
+              <div className={`hac-card ${i % 2 === 0 ? 'hac-reveal--left' : 'hac-reveal--right'}`} key={i}>
+                <div className="hac-card__img-wrap">
+                  {p.badge && <span className="hac-card__badge">{p.badge}</span>}
+                  <Link to="/shop">
+                    <img className="hac-card__img hac-img--primary"   src={p.img1} alt={p.title} loading="lazy" onError={e=>{e.target.onerror=null;e.target.src='assets/img/product/product1.webp'}} />
+                    <img className="hac-card__img hac-img--secondary" src={p.img2} alt={p.title} loading="lazy" onError={e=>{e.target.onerror=null;e.target.src='assets/img/product/product2.webp'}} />
+                  </Link>
+                  <div className="hac-card__actions">
+                    <Link to="/shop" className="hac-act-btn" title="Quick View">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="16" height="16"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    </Link>
+                    <Link to="/wishlist" className="hac-act-btn" title="Wishlist">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="16" height="16"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                    </Link>
+                  </div>
+                </div>
+                <div className="hac-card__body">
+                  <div className="hac-card__stars">
+                    {[1,2,3,4,5].map(s=><svg key={s} viewBox="0 0 24 24" fill="#D4A843" width="13" height="13"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>)}
+                  </div>
+                  <h3 className="hac-card__title"><Link to="/shop">{p.title}</Link></h3>
+                  <div className="hac-card__price-row">
+                    <span className="hac-card__price">₹{p.price.toLocaleString('en-IN')}</span>
+                    {p.old && <span className="hac-card__old">₹{p.old.toLocaleString('en-IN')}</span>}
+                    {disc > 0 && <span className="hac-card__disc">-{disc}%</span>}
+                  </div>
+                  <Link to="/cart" className="hac-card__btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="15" height="15"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                    Add to Cart
+                  </Link>
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+/* ─── Deal of the Week — Standalone ─── */
+const DealOfWeekSection = ({ dealEndDate, dealTitle, dealDesc, dealImage }) => {
   const calcTime = (endDate) => {
     const diff = Math.max(0, new Date(endDate) - Date.now())
     return {
@@ -37,101 +109,34 @@ const ArtisanalSection = ({ products = [], dealEndDate, dealTitle, dealDesc, dea
 
   const pad = n => String(n).padStart(2,'0')
 
-  const FALLBACK = [
-    { title:'Royal Wooden Chair', price:12999, old:16999, badge:'New',  img1:'assets/img/product/product1.webp', img2:'assets/img/product/product2.webp' },
-    { title:'Brass Table Lamp',   price:13499, old:17999, badge:null,   img1:'assets/img/product/product3.webp', img2:'assets/img/product/product4.webp' },
-    { title:'Ergonomic Chair',    price:13999, old:16499, badge:'New',  img1:'assets/img/product/product5.webp', img2:'assets/img/product/product6.webp' },
-    { title:'Study Desk',         price:12499, old:16999, badge:'New',  img1:'assets/img/product/product7.webp', img2:'assets/img/product/product8.webp' },
-  ]
-
-  const displayProducts = products.length >= 4
-    ? products.slice(0, 4).map(p => ({
-        title: p.title,
-        price: p.salePrice || p.price,
-        old:   p.salePrice ? p.price : null,
-        badge: p.tags?.[0] || null,
-        img1:  getImageUrl(p.images?.[0]?.url, 'assets/img/product/product1.webp'),
-        img2:  getImageUrl(p.images?.[1]?.url || p.images?.[0]?.url, 'assets/img/product/product2.webp'),
-        slug:  p.slug,
-      }))
-    : FALLBACK
-
   return (
-    <section className="hac-section hac-reveal">
-      <div className="container-fluid">
-        <div className="hac-inner">
-
-          {/* Left — Deal Spotlight */}
-          <div className="hac-spotlight">
-            <img src={getImageUrl(dealImage, 'assets/img/banner/banner9.webp')} alt="Deal" className="hac-spotlight__bg" loading="lazy" onError={e=>{e.target.onerror=null;e.target.src='assets/img/banner/banner9.webp'}} />
-            <div className="hac-spotlight__overlay" />
-            <div className="hac-spotlight__content">
-              <span className="hac-spotlight__label">Deal Of The Week</span>
-              <h3 className="hac-spotlight__title">{dealTitle || 'Teakwood Dining Showcase'}</h3>
-              <p className="hac-spotlight__desc">{dealDesc || 'Premium Teakwood Dining set — high durability, hand-varnished polish, custom upholstery options.'}</p>
-              <div className="hac-timer">
-                {[{v:pad(time.d),l:'Days'},{v:pad(time.h),l:'Hrs'},{v:pad(time.m),l:'Mins'},{v:pad(time.s),l:'Secs'}].map((t,i)=>(
-                  <div className="hac-timer__block" key={i}>
-                    <span className="hac-timer__val">{t.v}</span>
-                    <span className="hac-timer__label">{t.l}</span>
-                  </div>
-                ))}
-              </div>
-              <Link to="/shop" className="hac-spotlight__btn">
-                Order Now
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-              </Link>
-            </div>
+    <section className="dow-section dow-reveal">
+      <div className="container">
+        <div className="dow-card">
+          <div className="dow-card__img-wrap">
+            <img src={getImageUrl(dealImage, 'assets/img/banner/banner9.webp')} alt="Deal" className="dow-card__img" loading="lazy" onError={e=>{e.target.onerror=null;e.target.src='assets/img/banner/banner9.webp'}} />
+            <div className="dow-card__img-overlay" />
           </div>
-
-          {/* Right — Products */}
-          <div className="hac-right">
-            <div className="hac-header">
-              <span className="hac-overline">Artisanal Carving</span>
-              <h2 className="hac-title">Wooden <em>Furniture</em></h2>
-              <p className="hac-subtitle">Luxury handcrafted Sheesham &amp; Teak wood furniture for your home.</p>
+          <div className="dow-card__content">
+            <span className="dow-badge">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+              Deal of the Week
+            </span>
+            <h2 className="dow-title">{dealTitle || 'Teakwood Dining Showcase'}</h2>
+            <p className="dow-desc">{dealDesc || 'Premium Teakwood Dining set — high durability, hand-varnished polish, custom upholstery options.'}</p>
+            <div className="dow-timer">
+              {[{v:pad(time.d),l:'Days'},{v:pad(time.h),l:'Hrs'},{v:pad(time.m),l:'Mins'},{v:pad(time.s),l:'Secs'}].map((t,i)=>(
+                <div className="dow-timer__block" key={i}>
+                  <span className="dow-timer__val">{t.v}</span>
+                  <span className="dow-timer__label">{t.l}</span>
+                </div>
+              ))}
             </div>
-            <div className="hac-grid">
-              {displayProducts.map((p,i) => {
-                const disc = Math.round((1 - p.price/p.old)*100)
-                return (
-                  <div className={`hac-card ${i % 2 === 0 ? 'hac-reveal--left' : 'hac-reveal--right'}`} key={i}>
-                    <div className="hac-card__img-wrap">
-                      {p.badge && <span className="hac-card__badge">{p.badge}</span>}
-                      <Link to="/shop">
-                        <img className="hac-card__img hac-img--primary"   src={p.img1} alt={p.title} loading="lazy" onError={e=>{e.target.onerror=null;e.target.src='assets/img/product/product1.webp'}} />
-                        <img className="hac-card__img hac-img--secondary" src={p.img2} alt={p.title} loading="lazy" onError={e=>{e.target.onerror=null;e.target.src='assets/img/product/product2.webp'}} />
-                      </Link>
-                      <div className="hac-card__actions">
-                        <Link to="/shop" className="hac-act-btn" title="Quick View">
-                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="16" height="16"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                        </Link>
-                        <Link to="/wishlist" className="hac-act-btn" title="Wishlist">
-                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="16" height="16"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-                        </Link>
-                      </div>
-                    </div>
-                    <div className="hac-card__body">
-                      <div className="hac-card__stars">
-                        {[1,2,3,4,5].map(s=><svg key={s} viewBox="0 0 24 24" fill="#1E4D8C" width="13" height="13"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>)}
-                      </div>
-                      <h3 className="hac-card__title"><Link to="/shop">{p.title}</Link></h3>
-                      <div className="hac-card__price-row">
-                        <span className="hac-card__price">₹{p.price.toLocaleString('en-IN')}</span>
-                        <span className="hac-card__old">₹{p.old.toLocaleString('en-IN')}</span>
-                        <span className="hac-card__disc">-{disc}%</span>
-                      </div>
-                      <Link to="/cart" className="hac-card__btn">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="15" height="15"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
-                        Add to Cart
-                      </Link>
-                    </div>
-                  </div>
-                )
-              })}
-            </div>
+            <Link to="/shop" className="dow-btn">
+              Order Now
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </Link>
           </div>
-
         </div>
       </div>
     </section>
@@ -242,7 +247,7 @@ const MostPopularSection = ({ products = [] }) => {
                 <div className="hpop-card__body">
                   <div className="hpop-card__stars">
                     {[1,2,3,4,5].map(s=>(
-                      <svg key={s} viewBox="0 0 24 24" fill="#C9A06C" width="14" height="14"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                      <svg key={s} viewBox="0 0 24 24" fill="#D4A843" width="14" height="14"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                     ))}
                   </div>
                   <h3 className="hpop-card__title"><Link to={href}>{p.title}</Link></h3>
@@ -274,8 +279,104 @@ const MostPopularSection = ({ products = [] }) => {
 }
 
 
+/* ─── Stay Connected — Self-contained CTA ─── */
+const StayConnectedSection = () => {
+  const [email, setEmail] = useState('')
+  const [status, setStatus] = useState('idle')
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    if (!email) return
+    setStatus('loading')
+    try {
+      await newsletterAPI.subscribe(email)
+      setStatus('success')
+      setEmail('')
+      setTimeout(() => setStatus('idle'), 4000)
+    } catch {
+      setStatus('error')
+      setTimeout(() => setStatus('idle'), 3000)
+    }
+  }
+
+  return (
+    <section className="sc-section sc-reveal">
+      <div className="container">
+        <div className="sc-card">
+          <div className="sc-card__left">
+            <div className="sc-icon-row">
+              <span className="sc-icon">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              </span>
+              <span className="sc-label">Newsletter</span>
+            </div>
+            <h2 className="sc-title">Get <em>10% Off</em> Your First Order</h2>
+            <p className="sc-desc">Join 5,000+ home lovers. New arrivals, curated picks & member-only deals &mdash; once a week.</p>
+
+            <form className="sc-form" onSubmit={handleSubmit}>
+              <div className="sc-form__row">
+                <input
+                  className="sc-form__input"
+                  type="email"
+                  placeholder="Enter your email address"
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                  required
+                />
+                <button className="sc-form__btn" type="submit" disabled={status === 'loading'}>
+                  {status === 'loading' ? 'Joining...' : 'Subscribe'}
+                </button>
+              </div>
+              {status === 'success' && <p className="sc-msg sc-msg--ok">Welcome aboard! Check your inbox for the code.</p>}
+              {status === 'error' && <p className="sc-msg sc-msg--err">Something went wrong. Try again.</p>}
+            </form>
+
+            <div className="sc-trust">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              <span>No spam. Unsubscribe anytime.</span>
+            </div>
+          </div>
+
+          <div className="sc-card__right">
+            <div className="sc-perks">
+              <div className="sc-perk">
+                <span className="sc-perk__icon">
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                </span>
+                <div>
+                  <h4 className="sc-perk__title">Curated Picks</h4>
+                  <p className="sc-perk__text">Hand-selected furniture just for you</p>
+                </div>
+              </div>
+              <div className="sc-perk">
+                <span className="sc-perk__icon">
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="M16 8l-8 8"/><path d="M8 8h8v8"/></svg>
+                </span>
+                <div>
+                  <h4 className="sc-perk__title">Early Access</h4>
+                  <p className="sc-perk__text">Shop new drops before everyone else</p>
+                </div>
+              </div>
+              <div className="sc-perk">
+                <span className="sc-perk__icon">
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+                </span>
+                <div>
+                  <h4 className="sc-perk__title">Member Deals</h4>
+                  <p className="sc-perk__text">Exclusive discounts up to 30% off</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+
 const Home = () => {
-  const { dealEndDate, dealTitle, dealDesc, dealImage, instagramPosts, instagramHandle, bannerVideoUrl } = useSettings()
+  const { dealEndDate, dealTitle, dealDesc, dealImage, instagramPosts, instagramHandle, instagram, bannerVideoUrl } = useSettings()
   const [banners, setBanners] = useState([])
   const [products, setProducts] = useState([])
   const [allProducts, setAllProducts] = useState([])
@@ -328,7 +429,7 @@ const Home = () => {
   }, [loading, banners.length])
 
   useEffect(() => {
-    const els = document.querySelectorAll('.hts-reveal, .hn2-reveal, .hfc2-reveal, .hb3-reveal, .hig2-reveal, .hcat2-reveal, .hpop-reveal, .hac-reveal, .hts-reveal--left, .hts-reveal--right, .hb3-reveal--left, .hb3-reveal--right, .hfc2-reveal--left, .hfc2-reveal--right, .hcat2-reveal--left, .hcat2-reveal--right, .hpop-reveal--left, .hpop-reveal--right, .hac-reveal--left, .hac-reveal--right, .hig2-reveal--left, .hig2-reveal--right')
+    const els = document.querySelectorAll('.hts-reveal, .hn2-reveal, .sc-reveal, .hfc2-reveal, .hb3-reveal, .hig2-reveal, .hig3-section, .hcat2-reveal, .hpop-reveal, .hac-reveal, .dow-reveal, .hts-reveal--left, .hts-reveal--right, .hb3-reveal--left, .hb3-reveal--right, .hfc2-reveal--left, .hfc2-reveal--right, .hcat2-reveal--left, .hcat2-reveal--right, .hpop-reveal--left, .hpop-reveal--right, .hac-reveal--left, .hac-reveal--right, .hig2-reveal--left, .hig2-reveal--right')
     if (!els.length || !window.IntersectionObserver) return
     const obs = new IntersectionObserver(entries => {
       entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-visible'); obs.unobserve(e.target) } })
@@ -499,7 +600,7 @@ const Home = () => {
 
             <div className="hcat2-grid">
               {(categories.length > 0 ? categories : []).slice(0, 4).map((cat, i) => {
-                const CAT_COLORS = ['#1E4D8C','#2A5C9A','#3A6EBA','#1B3A6B']
+                const CAT_COLORS = ['#163B68','#1B3050','#1E4A7E','#0F2035']
                 const CAT_ICONS = [
                   <svg key="0" viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>,
                   <svg key="1" viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M2 4v16"/><path d="M2 8h20"/><path d="M22 4v16"/><path d="M6 8v12"/><path d="M18 8v12"/><rect x="6" y="12" width="12" height="4" rx="1"/></svg>,
@@ -556,9 +657,14 @@ const Home = () => {
         </section>
         
         {/* ══════════════════════════════════════════════
+            DEAL OF THE WEEK
+        ══════════════════════════════════════════════ */}
+        <DealOfWeekSection dealEndDate={dealEndDate} dealTitle={dealTitle} dealDesc={dealDesc} dealImage={dealImage} />
+
+        {/* ══════════════════════════════════════════════
             ARTISANAL CARVING — Wooden Furniture Section
         ══════════════════════════════════════════════ */}
-        <ArtisanalSection products={allProducts} dealEndDate={dealEndDate} dealTitle={dealTitle} dealDesc={dealDesc} dealImage={dealImage} />
+        <ArtisanalSection products={allProducts} />
 
 
         
@@ -773,7 +879,7 @@ const Home = () => {
                 <div className={`hts-card ${i % 2 === 0 ? 'hts-reveal--left' : 'hts-reveal--right'}`} key={t._id || i}>
                   <div className="hts-stars">
                     {Array.from({ length: 5 }, (_, si) => (
-                      <svg key={si} width="12" height="12" viewBox="0 0 24 24" fill={si < (t.rating || 5) ? "#C9A06C" : "currentColor"} opacity={si < (t.rating || 5) ? 1 : 0.2}>
+                      <svg key={si} width="12" height="12" viewBox="0 0 24 24" fill={si < (t.rating || 5) ? "#D4A843" : "currentColor"} opacity={si < (t.rating || 5) ? 1 : 0.2}>
                         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
                       </svg>
                     ))}
@@ -793,25 +899,8 @@ const Home = () => {
           </div>
         </section>
 
-        {/* ── Stay Connected — Premium ── */}
-        <section className="hn2-section hn2-reveal">
-          <div className="container-fluid">
-            <div className="hn2-wrap" style={{ backgroundImage: "url('assets/img/banner/banner-bg2.webp')" }}>
-              <div className="hn2-overlay" />
-              <div className="hn2-content">
-                <span className="hn2-badge">
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-                  Stay Connected
-                </span>
-                <h2 className="hn2-title">Subscribe & Get <em>Exclusive</em> Deals</h2>
-                <p className="hn2-desc">New arrivals, design inspiration &amp; member-only discounts — straight to your inbox.</p>
-                <NewsletterBanner bgImage="" fluid noGapTop />
-              </div>
-              <div className="hn2-deco hn2-deco--1" />
-              <div className="hn2-deco hn2-deco--2" />
-            </div>
-          </div>
-        </section>
+        {/* ── Stay Connected — Clean CTA ── */}
+        <StayConnectedSection />
 
         {/* ── Blog Section — Modern Cards ── */}
         <section className="hb3-section hb3-reveal">
@@ -871,43 +960,43 @@ const Home = () => {
         </section>
 
 
-        {/* ── Instagram Section — Tilt Grid ── */}
-        <div className="hig2-section hig2-reveal">
+        {/* ── Instagram — Premium Feed ── */}
+        <section className="hig3-section hig2-reveal">
           <div className="container">
-            <div className="hig2-header">
-              <div className="hig2-header__icon">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-              </div>
+            <div className="hig3-header">
               <div>
-                <h2 className="hig2-title">Follow Us on <span>Instagram</span></h2>
-                <p className="hig2-subtitle">{instagramHandle || '@wooden_furniture_lucknow'} — Tag us to get featured!</p>
+                <span className="hig3-overline">Our Feed</span>
+                <h2 className="hig3-title">Follow Us on <em>Instagram</em></h2>
+                <p className="hig3-subtitle">{instagramHandle || '@wooden_furniture_lucknow'} &mdash; Tag us to get featured!</p>
               </div>
-              <a className="hig2-follow" href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">
+              <a className="hig3-follow" href={instagram || `https://www.instagram.com/${(instagramHandle || '').replace('@','')}`} target="_blank" rel="noopener noreferrer">
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
                 Follow
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
               </a>
             </div>
-            <div className="hig2-grid">
+
+            <div className="hig3-grid">
               {(instagramPosts.length > 0 ? instagramPosts : [
-                { image: 'assets/img/other/instagram1.webp', url: 'https://www.instagram.com' },
-                { image: 'assets/img/other/instagram2.webp', url: 'https://www.instagram.com' },
-                { image: 'assets/img/other/instagram3.webp', url: 'https://www.instagram.com' },
-                { image: 'assets/img/other/instagram4.webp', url: 'https://www.instagram.com' },
-                { image: 'assets/img/other/instagram5.webp', url: 'https://www.instagram.com' },
-                { image: 'assets/img/other/instagram6.webp', url: 'https://www.instagram.com' },
+                { image: 'assets/img/other/instagram1.webp', url: instagram || 'https://www.instagram.com' },
+                { image: 'assets/img/other/instagram2.webp', url: instagram || 'https://www.instagram.com' },
+                { image: 'assets/img/other/instagram3.webp', url: instagram || 'https://www.instagram.com' },
+                { image: 'assets/img/other/instagram4.webp', url: instagram || 'https://www.instagram.com' },
+                { image: 'assets/img/other/instagram5.webp', url: instagram || 'https://www.instagram.com' },
+                { image: 'assets/img/other/instagram6.webp', url: instagram || 'https://www.instagram.com' },
               ]).map((item, i) => (
-                <a key={i} className={`hig2-item ${i % 2 === 0 ? 'hig2-reveal--left' : 'hig2-reveal--right'}`} href={item.url} target="_blank" rel="noopener noreferrer" aria-label={`Instagram post ${i + 1}`}>
-                  <img className="hig2-img" src={getImageUrl(item.image, 'assets/img/other/instagram1.webp')} alt={`Instagram post ${i + 1}`} loading="lazy"
+                <a key={i} className={`hig3-item${i === 0 ? ' hig3-item--featured' : ''}`} href={item.url || instagram || 'https://www.instagram.com'} target="_blank" rel="noopener noreferrer" aria-label={`Instagram post ${i + 1}`}>
+                  <img className="hig3-img" src={getImageUrl(item.image, 'assets/img/other/instagram1.webp')} alt={`Instagram post ${i + 1}`} loading="lazy"
                     onError={e=>{e.target.onerror=null;e.target.src='assets/img/other/instagram1.webp'}} />
-                  <span className="hig2-overlay">
-                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-                    <span>View</span>
-                  </span>
+                  <div className="hig3-overlay">
+                    <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                    <span className="hig3-overlay__label">View Post</span>
+                  </div>
                 </a>
               ))}
             </div>
           </div>
-        </div>
+        </section>
     </>
   )
 }
