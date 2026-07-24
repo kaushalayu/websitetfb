@@ -4,6 +4,13 @@
   publish = "dist"
   command = "npm run build"
 
+# Sitemap proxy — serve dynamic sitemap from backend
+[[redirects]]
+  from = "/sitemap.xml"
+  to = "https://adi-backend-vb6n.onrender.com/sitemap.xml"
+  status = 200
+  force = true
+
 # SPA routing — all routes serve index.html
 [[redirects]]
   from = "/*"

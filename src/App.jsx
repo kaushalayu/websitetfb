@@ -47,7 +47,9 @@ const router = createBrowserRouter([
       { path: '/my-account-2', element: <MyAccount2 /> },
       { path: '/portfolio', element: <Portfolio /> },
       { path: '/privacy-policy', element: <PrivacyPolicy /> },
+      { path: '/product/:slug', element: <ProductVariable /> },
       { path: '/product-variable', element: <ProductVariable /> },
+
       { path: '/shop-grid', element: <Navigate to="/shop" replace /> },
       { path: '/shop', element: <Shop /> },
       { path: '/wishlist', element: <Wishlist /> },

@@ -90,13 +90,13 @@ const Wishlist = () => {
 
                                                 <div className="cart__thumbnail">
 
-                                                    <Link to={`/product-variable?slug=${product.slug}`} ><img className="border-radius-5" src={getImageUrl(product.images?.[0]?.url, 'assets/img/product/product1.webp')} alt={product.title} loading="lazy" onError={e=>{e.target.onerror=null;e.target.src='assets/img/product/product1.webp'}} /></Link>
+                                                    <Link to={`/product/${product.slug}`} ><img className="border-radius-5" src={getImageUrl(product.images?.[0]?.url, 'assets/img/product/product1.webp')} alt={product.title} loading="lazy" onError={e=>{e.target.onerror=null;e.target.src='assets/img/product/product1.webp'}} /></Link>
 
                                                 </div>
 
                                                 <div className="cart__content">
 
-                                                    <h4 className="cart__content--title"><Link to={`/product-variable?slug=${product.slug}`} >{product.title}</Link></h4>
+                                                    <h4 className="cart__content--title"><Link to={`/product/${product.slug}`} >{product.title}</Link></h4>
 
                                                     {product.colors?.length > 0 && (
                                                       <span className="cart__content--variant">COLOR: {product.colors[0]}</span>

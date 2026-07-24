@@ -3,12 +3,19 @@ import { Link } from 'react-router-dom'
 import { contactAPI } from '../services/api'
 import { useSettings } from '../context/SettingsContext'
 import NewsletterBanner from '../components/NewsletterBanner'
+import useSEO from '../hooks/useSEO'
 
 const Contact = () => {
   const {
     address, email, phone,
     facebook, twitter, instagram, youtube, skype, whatsapp,
   } = useSettings()
+
+  useSEO({
+    title: 'Contact Us - Get In Touch',
+    description: 'Contact The Furniture Boutique in Lucknow. Visit our showroom, call us or send a message. We\'re here to help with all your furniture needs.',
+    canonical: '/contact',
+  })
 
   const [formData, setFormData] = useState({
     firstname: '', lastname: '', number: '', email: '', message: ''

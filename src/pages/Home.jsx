@@ -5,6 +5,7 @@ import { bannerAPI, productAPI, testimonialAPI, blogAPI, categoryAPI, getImageUr
 import { useSettings } from '../context/SettingsContext'
 import { newsletterAPI } from '../services/api'
 import NewsletterBanner from '../components/NewsletterBanner'
+import useSEO from '../hooks/useSEO'
 
 /* ─── Artisanal Wooden Furniture Section ─── */
 const ArtisanalSection = ({ products = [] }) => {
@@ -226,7 +227,7 @@ const MostPopularSection = ({ products = [] }) => {
             const disc = old ? Math.round((1 - curr/old)*100) : null
             const img = getImageUrl(p.images?.[0]?.url, 'assets/img/product/product1.webp')
             const badge = p.tags?.[0] || null
-            const href = p.slug ? `/product-variable?slug=${p.slug}` : '/shop'
+            const href = p.slug ? `/product/${p.slug}` : '/shop'
             return (
               <div className={`hpop-card ${i % 2 === 0 ? 'hpop-reveal--left' : 'hpop-reveal--right'}`} key={i}>
                 <div className="hpop-card__img-wrap">
@@ -292,6 +293,21 @@ const Home = () => {
   const [blogPosts, setBlogPosts] = useState([])
   const [loading, setLoading] = useState(true)
   const heroSwiperRef = useRef(null)
+
+  useSEO({
+    title: 'Premium Wooden Furniture Store in Lucknow',
+    description: 'Shop premium handcrafted wooden furniture in Lucknow — sofa sets, dining tables, king-size beds & more. 5-year warranty. Free delivery in Lucknow.',
+    canonical: '/',
+    schema: {
+      '@context': 'https://schema.org',
+      '@type': 'FurnitureStore',
+      name: 'The Furniture Boutique',
+      url: 'https://thefurnitureboutique.in',
+      description: 'Lucknow\'s premier furniture store. Premium wooden furniture crafted with Indian tradition.',
+      address: { '@type': 'PostalAddress', addressLocality: 'Lucknow', addressRegion: 'UP', addressCountry: 'IN' },
+      priceRange: '₹₹₹',
+    },
+  })
 
   useEffect(() => {
     const fetchData = async () => {
@@ -460,7 +476,7 @@ const Home = () => {
                 const curr = product.salePrice || product.price || 0
                 const old  = product.salePrice && product.price > product.salePrice ? product.price : null
                 const disc = old ? Math.round((1 - curr/old)*100) : null
-                const href = product.slug ? `/product-variable?slug=${product.slug}` : '/shop'
+                const href = product.slug ? `/product/${product.slug}` : '/shop'
                 return (
                   <Link to={href} className={`hfc2-card ${idx % 2 === 0 ? 'hfc2-reveal--left' : 'hfc2-reveal--right'}`} key={product._id || idx}>
                     <div className="hfc2-card__img-wrap">

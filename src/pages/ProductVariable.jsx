@@ -5,6 +5,7 @@ import { useCart } from '../context/CartContext'
 import { useAuth } from '../context/AuthContext'
 import { useWishlist } from '../context/WishlistContext'
 import NewsletterBanner from '../components/NewsletterBanner'
+import useSEO, { SITE } from '../hooks/useSEO'
 
 const StarIcon = ({ fill = 'currentColor' }) => (
   <svg className="rating__list--icon__svg" xmlns="http://www.w3.org/2000/svg" width="13.105" height="13.732" viewBox="0 0 10.105 9.732">
@@ -30,6 +31,7 @@ const renderStars = (rating) => {
 const ProductVariable = () => {
   const { slug: paramSlug } = useParams()
   const [searchParams] = useSearchParams()
+  // Support both /product/:slug (new clean URL) and /product-variable?slug= (legacy)
   const slug = paramSlug || searchParams.get('slug')
 
   const { addItem } = useCart()
@@ -55,6 +57,44 @@ const ProductVariable = () => {
   const [submittingReview, setSubmittingReview] = useState(false)
   const [reviewSubmitted, setReviewSubmitted] = useState(false)
   const [activeTab, setActiveTab] = useState('description')
+
+  // Dynamic SEO — updates when product loads
+  const productImg = product?.images?.[0]?.url || null
+  useSEO({
+    title: product
+      ? `${product.title} - Buy Online`
+      : 'Product Details',
+    description: product
+      ? `Buy ${product.title} at ₹${(product.salePrice || product.price || 0).toLocaleString('en-IN')}. ${(product.description || '').slice(0, 120)}`
+      : 'View product details at The Furniture Boutique.',
+    canonical: product ? `/product/${product.slug}` : null,
+    image: productImg,
+    type: 'product',
+    schema: product ? {
+      '@context': 'https://schema.org',
+      '@type': 'Product',
+      name: product.title,
+      description: product.description || '',
+      image: product.images?.map(img => img.url).filter(Boolean) || [],
+      sku: product.sku || undefined,
+      brand: product.brand ? { '@type': 'Brand', name: product.brand } : undefined,
+      offers: {
+        '@type': 'Offer',
+        priceCurrency: 'INR',
+        price: product.salePrice || product.price || 0,
+        availability: product.stock > 0
+          ? 'https://schema.org/InStock'
+          : 'https://schema.org/OutOfStock',
+        url: `https://thefurnitureboutique.in/product/${product.slug}`,
+        seller: { '@type': 'Organization', name: 'The Furniture Boutique' },
+      },
+      aggregateRating: totalReviews > 0 ? {
+        '@type': 'AggregateRating',
+        ratingValue: averageRating.toFixed(1),
+        reviewCount: totalReviews,
+      } : undefined,
+    } : undefined,
+  })
 
   useEffect(() => {
     if (!slug) return

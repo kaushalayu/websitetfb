@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { teamAPI, getImageUrl } from '../services/api'
 import NewsletterBanner from '../components/NewsletterBanner'
+import useSEO from '../hooks/useSEO'
 
 const counters = [
   { label: 'YEARS OF FOUNDATION', target: 50 },
@@ -58,6 +59,12 @@ const CounterItem = ({ item }) => {
 
 const About = () => {
   const [team, setTeam] = useState([])
+
+  useSEO({
+    title: 'About Us - Our Story & Craftsmanship',
+    description: 'Learn about The Furniture Boutique — Lucknow\'s premier furniture store since 2009. Handcrafted wooden furniture with 5-year warranty & 10,000+ happy homes.',
+    canonical: '/about',
+  })
 
   useEffect(() => {
     teamAPI.list()

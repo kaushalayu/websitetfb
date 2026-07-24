@@ -118,13 +118,13 @@ const Cart = () => {
 
                                                         <div className="cart__thumbnail">
 
-                                                            <Link to={`/product-variable?slug=${item.product.slug}`}><img className="border-radius-5" src={getImageUrl(item.image || item.product.images?.[0]?.url, 'assets/img/product/product1.webp')} alt="cart-product" loading="lazy" onError={e=>{e.target.onerror=null;e.target.src='assets/img/product/product1.webp'}} /></Link>
+                                                            <Link to={`/product/${item.product.slug}`}><img className="border-radius-5" src={getImageUrl(item.image || item.product.images?.[0]?.url, 'assets/img/product/product1.webp')} alt={item.product.title || 'product'} loading="lazy" onError={e=>{e.target.onerror=null;e.target.src='assets/img/product/product1.webp'}} /></Link>
 
                                                         </div>
 
                                                         <div className="cart__content">
 
-                                                            <h4 className="cart__content--title"><Link to={`/product-variable?slug=${item.product.slug}`}>{item.product.title || item.product.name}</Link></h4>
+                                                            <h4 className="cart__content--title"><Link to={`/product/${item.product.slug}`}>{item.product.title || item.product.name}</Link></h4>
 
                                                             {item.selectedColor && <span className="cart__content--variant">COLOR: {item.selectedColor}</span>}
 

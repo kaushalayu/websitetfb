@@ -1,7 +1,13 @@
 import { Link } from 'react-router-dom'
 import NewsletterBanner from '../components/NewsletterBanner'
+import useSEO from '../hooks/useSEO'
 
 const NotFound = () => {
+  useSEO({
+    title: 'Page Not Found',
+    description: 'The page you are looking for does not exist. Go back to The Furniture Boutique homepage.',
+    noindex: true,
+  })
   return (
     <>
 <section className="error__section section--padding">

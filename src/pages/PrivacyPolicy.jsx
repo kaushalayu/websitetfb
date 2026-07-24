@@ -1,7 +1,13 @@
 import { Link } from 'react-router-dom'
 import NewsletterBanner from '../components/NewsletterBanner'
+import useSEO from '../hooks/useSEO'
 
 const PrivacyPolicy = () => {
+  useSEO({
+    title: 'Privacy Policy',
+    description: 'Read The Furniture Boutique\'s privacy policy. Learn how we collect, use and protect your personal data.',
+    canonical: '/privacy-policy',
+  })
   return (
     <>
 <section className="breadcrumb__section breadcrumb__bg">

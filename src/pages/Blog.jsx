@@ -2,12 +2,19 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { blogAPI, getImageUrl } from '../services/api'
 import NewsletterBanner from '../components/NewsletterBanner'
+import useSEO from '../hooks/useSEO'
 
 const Blog = () => {
   const [posts, setPosts] = useState([])
   const [recentPosts, setRecentPosts] = useState([])
   const [pagination, setPagination] = useState({ page: 1, pages: 1 })
   const [page, setPage] = useState(1)
+
+  useSEO({
+    title: 'Blog - Furniture Tips, Design Ideas & Home Inspiration',
+    description: 'Read our blog for furniture buying tips, interior design ideas, wood care guides and home décor inspiration from The Furniture Boutique, Lucknow.',
+    canonical: '/blog',
+  })
 
   useEffect(() => {
     blogAPI.list({ page, limit: 6 })

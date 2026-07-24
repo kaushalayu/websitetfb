@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { faqAPI } from '../services/api'
 import NewsletterBanner from '../components/NewsletterBanner'
+import useSEO from '../hooks/useSEO'
 
 const FaqItem = ({ question, answer }) => {
   const [open, setOpen] = useState(false)
@@ -31,6 +32,12 @@ const categories = [
 const Faq = () => {
   const [faqs, setFaqs] = useState([])
   const [loading, setLoading] = useState(true)
+
+  useSEO({
+    title: 'FAQ - Frequently Asked Questions',
+    description: 'Find answers to common questions about shipping, payments, returns, and furniture at The Furniture Boutique, Lucknow.',
+    canonical: '/faq',
+  })
 
   useEffect(() => {
     faqAPI.list()

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import NewsletterBanner from '../components/NewsletterBanner'
 import { blogAPI, commentAPI, getImageUrl } from '../services/api'
+import useSEO, { SITE } from '../hooks/useSEO'
 
 const BlogDetails = () => {
   const { slug } = useParams()
@@ -130,6 +131,31 @@ const BlogDetails = () => {
   }
 
   const siteUrl = 'https://thefurnitureboutique.in'
+
+  // Dynamic SEO for blog post
+  useSEO({
+    title: post ? (post.metaTitle || post.title) : 'Blog Post',
+    description: post ? (post.metaDescription || post.excerpt || post.title) : '',
+    canonical: post ? `/blog/${slug}` : null,
+    image: post?.ogImage || post?.featuredImage || null,
+    type: 'article',
+    schema: post ? {
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline: post.metaTitle || post.title,
+      description: post.metaDescription || post.excerpt || '',
+      image: post.featuredImage ? [post.featuredImage] : [],
+      author: { '@type': 'Person', name: post.author || 'The Furniture Boutique' },
+      publisher: {
+        '@type': 'Organization',
+        name: 'The Furniture Boutique',
+        logo: { '@type': 'ImageObject', url: `${siteUrl}/assets/img/favicon.ico` },
+      },
+      datePublished: post.publishedAt,
+      dateModified: post.updatedAt || post.publishedAt,
+      mainEntityOfPage: { '@type': 'WebPage', '@id': `${siteUrl}/blog/${slug}` },
+    } : undefined,
+  })
 
   useEffect(() => {
     const breadcrumbSchema = {

@@ -3,6 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom'
 import { productAPI, categoryAPI, getImageUrl } from '../services/api'
 import { useCart } from '../context/CartContext'
 import NewsletterBanner from '../components/NewsletterBanner'
+import useSEO from '../hooks/useSEO'
 
 const SORT_OPTIONS = [
   { value: 'newest', label: 'Newest First' },
@@ -91,7 +92,7 @@ const QuickViewModal = ({ slug, onClose }) => {
               <button className={`sqv-btn-cart ${added ? 'added' : ''}`} onClick={handleAddToCart}>
                 {added ? '✓ Added to Cart!' : 'Add to Cart'}
               </button>
-              <Link to={`/product-variable?slug=${product.slug}`} className="sqv-btn-link">View Full Details →</Link>
+              <Link to={`/product/${product.slug}`} className="sqv-btn-link">View Full Details →</Link>
             </div>
           </div>
         )}
@@ -104,6 +105,18 @@ const QuickViewModal = ({ slug, onClose }) => {
 const Shop = () => {
   const { addItem } = useCart()
   const [searchParams, setSearchParams] = useSearchParams()
+  const category = searchParams.get('category') || ''
+  const search = searchParams.get('search') || ''
+
+  useSEO({
+    title: search
+      ? `Search: "${search}" - Furniture`
+      : category
+        ? `${category.charAt(0).toUpperCase() + category.slice(1)} - Buy Online`
+        : 'Shop Furniture Online - Sofas, Beds, Dining & More',
+    description: 'Shop premium handcrafted wooden furniture online. Browse sofas, king-size beds, dining tables, wardrobes & more. Best prices with 5-year warranty.',
+    canonical: '/shop',
+  })
   const [products, setProducts] = useState([])
   const [categories, setCategories] = useState([])
   const [pagination, setPagination] = useState({ page: 1, total: 0, pages: 1 })
@@ -115,8 +128,6 @@ const Shop = () => {
   const [viewMode, setViewMode] = useState('grid') // 'grid' | 'list'
 
   const page    = parseInt(searchParams.get('page')) || 1
-  const category = searchParams.get('category') || ''
-  const search  = searchParams.get('search') || ''
   const minPrice = searchParams.get('minPrice') || ''
   const maxPrice = searchParams.get('maxPrice') || ''
   const sort    = searchParams.get('sort') || 'newest'
@@ -416,7 +427,7 @@ const Shop = () => {
                       return (
                         <article className="sp-card" key={product._id}>
                           <div className="sp-card__img-wrap">
-                            <Link to={`/product-variable?slug=${product.slug}`} tabIndex="-1">
+                            <Link to={`/product/${product.slug}`} tabIndex="-1">
                               <img className="sp-card__img sp-card__img--primary" src={getImage(product, 0)} alt={product.title} loading="lazy" onError={handleImgError} />
                               <img className="sp-card__img sp-card__img--secondary" src={getImage(product, 1) || getImage(product, 0)} alt={product.title} loading="lazy" onError={handleImgError} />
                             </Link>
@@ -437,7 +448,7 @@ const Shop = () => {
                               >
                                 <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                               </button>
-                              <Link to={`/product-variable?slug=${product.slug}`} className="sp-action-btn" aria-label="View details" title="View Details">
+                              <Link to={`/product/${product.slug}`} className="sp-action-btn" aria-label="View details" title="View Details">
                                 <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
                               </Link>
                             </div>
@@ -448,7 +459,7 @@ const Shop = () => {
                               <span className="sp-card__cat">{product.category.name}</span>
                             )}
                             <h3 className="sp-card__title">
-                              <Link to={`/product-variable?slug=${product.slug}`}>{product.title}</Link>
+                              <Link to={`/product/${product.slug}`}>{product.title}</Link>
                             </h3>
                             {viewMode === 'list' && product.description && (
                               <p className="sp-card__desc">
