@@ -71,7 +71,7 @@ const Blog = () => {
                   <div className="blog-grid">
                     {posts.map(post => (
                       <article className="blog-card" key={post._id}>
-                        <Link className="blog-card__img-wrap" to={`/blog-details?slug=${post.slug}`}>
+                        <Link className="blog-card__img-wrap" to={`/blog/${post.slug}`}>
                            <img
                             className="blog-card__img"
                             src={getImageUrl(post.featuredImage, 'assets/img/blog/blog5.webp')}
@@ -99,10 +99,10 @@ const Blog = () => {
                             </span>
                           </div>
                           <h3 className="blog-card__title">
-                            <Link to={`/blog-details?slug=${post.slug}`}>{post.title}</Link>
+                            <Link to={`/blog/${post.slug}`}>{post.title}</Link>
                           </h3>
                           <p className="blog-card__excerpt">{post.excerpt}</p>
-                          <Link className="blog-card__btn" to={`/blog-details?slug=${post.slug}`}>
+                          <Link className="blog-card__btn" to={`/blog/${post.slug}`}>
                             Read More
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                               <line x1="5" y1="12" x2="19" y2="12" />
@@ -172,7 +172,7 @@ const Blog = () => {
                         />
                         <div className="blog-sidebar__recent-content">
                           <h4 className="blog-sidebar__recent-title">
-                            <Link to={`/blog-details?slug=${rp.slug}`}>{rp.title}</Link>
+                            <Link to={`/blog/${rp.slug}`}>{rp.title}</Link>
                           </h4>
                           <span className="blog-sidebar__recent-date">{formatDate(rp.publishedAt)}</span>
                         </div>

@@ -853,7 +853,7 @@ const Home = () => {
                 <div className="hb3-grid">
                   {posts.slice(0, 3).map((post, i) => (
                     <article key={post._id || i} className={`hb3-card ${i % 2 === 0 ? 'hb3-reveal--left' : 'hb3-reveal--right'}`}>
-                      <Link to={post.slug ? `/blog-details?slug=${post.slug}` : '/blog'} className="hb3-card__img-wrap">
+                      <Link to={post.slug ? `/blog/${post.slug}` : '/blog'} className="hb3-card__img-wrap">
                         <img
                           src={getImageUrl(post.featuredImage, `assets/img/blog/blog${i + 1}.webp`)}
                           alt={post.title}
@@ -870,9 +870,9 @@ const Home = () => {
                           <span>{post.publishedAt ? new Date(post.publishedAt).toLocaleDateString('en-IN',{year:'numeric',month:'short',day:'2-digit'}) : ''}</span>
                         </div>
                         <h3 className="hb3-card__title">
-                          <Link to={post.slug ? `/blog-details?slug=${post.slug}` : '/blog'}>{post.title}</Link>
+                          <Link to={post.slug ? `/blog/${post.slug}` : '/blog'}>{post.title}</Link>
                         </h3>
-                        <Link to={post.slug ? `/blog-details?slug=${post.slug}` : '/blog'} className="hb3-read">
+                        <Link to={post.slug ? `/blog/${post.slug}` : '/blog'} className="hb3-read">
                           Read
                           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
                         </Link>

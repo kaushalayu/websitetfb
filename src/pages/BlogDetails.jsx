@@ -1,12 +1,10 @@
 import { useState, useEffect } from 'react'
-import { Link, useParams, useSearchParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import NewsletterBanner from '../components/NewsletterBanner'
 import { blogAPI, commentAPI, getImageUrl } from '../services/api'
 
 const BlogDetails = () => {
-  const { slug: paramSlug } = useParams()
-  const [searchParams] = useSearchParams()
-  const slug = paramSlug || searchParams.get('slug')
+  const { slug } = useParams()
   const [post, setPost] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -131,6 +129,32 @@ const BlogDetails = () => {
     )
   }
 
+  const siteUrl = 'https://thefurnitureboutique.in'
+
+  useEffect(() => {
+    const breadcrumbSchema = {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      'itemListElement': [
+        { '@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': siteUrl },
+        { '@type': 'ListItem', 'position': 2, 'name': 'Blog', 'item': `${siteUrl}/blog` },
+        { '@type': 'ListItem', 'position': 3, 'name': post?.title || '', 'item': `${siteUrl}/blog/${slug}` }
+      ]
+    }
+    let script = document.getElementById('breadcrumb-schema')
+    if (!script) {
+      script = document.createElement('script')
+      script.id = 'breadcrumb-schema'
+      script.type = 'application/ld+json'
+      document.head.appendChild(script)
+    }
+    script.textContent = JSON.stringify(breadcrumbSchema)
+    return () => {
+      const el = document.getElementById('breadcrumb-schema')
+      if (el) el.remove()
+    }
+  }, [post, slug])
+
   return (
     <main className="main__content_wrapper">
       <section className="breadcrumb__section breadcrumb__bg">
@@ -138,11 +162,11 @@ const BlogDetails = () => {
           <div className="row row-cols-1">
             <div className="col">
               <div className="breadcrumb__content">
-                <h1 className="breadcrumb__content--title text-white mb-10">Blog Details</h1>
+                <h1 className="breadcrumb__content--title text-white mb-10">{post.title?.slice(0, 50)}</h1>
                 <ul className="breadcrumb__content--menu d-flex">
                   <li className="breadcrumb__content--menu__items"><Link className="text-white" to="/">Home</Link></li>
                   <li className="breadcrumb__content--menu__items"><Link className="text-white" to="/blog">Blog</Link></li>
-                  <li className="breadcrumb__content--menu__items"><span className="text-white">{post.title?.slice(0, 30)}</span></li>
+                  <li className="breadcrumb__content--menu__items"><span className="text-white">{post.title?.slice(0, 40)}</span></li>
                 </ul>
               </div>
             </div>
@@ -224,13 +248,13 @@ const BlogDetails = () => {
                         <div className="col mb-28" key={rp._id}>
                           <div className="related__post--items">
                             <div className="related__post--thumbnail">
-                              <Link to={`/blog-details?slug=${rp.slug}`}>
+                              <Link to={`/blog/${rp.slug}`}>
                                 <img className="related__post--img" src={getImageUrl(rp.featuredImage, 'assets/img/blog/related-post1.webp')} alt={rp.title} loading="lazy" />
                               </Link>
                             </div>
                             <div className="related__post--text">
                               <h3 className="related__post--title">
-                                <Link className="related__post--title__link" to={`/blog-details?slug=${rp.slug}`}>{rp.title}</Link>
+                                <Link className="related__post--title__link" to={`/blog/${rp.slug}`}>{rp.title}</Link>
                               </h3>
                               <span className="related__post--deta">{new Date(rp.publishedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</span>
                             </div>
@@ -312,13 +336,13 @@ const BlogDetails = () => {
                       {recentPosts.slice(0, 4).map(rp => (
                         <div className="recent__post--item d-flex align-items-center" key={rp._id}>
                           <div className="recent__post--thumb">
-                            <Link to={`/blog-details?slug=${rp.slug}`}>
+                            <Link to={`/blog/${rp.slug}`}>
                               <img src={getImageUrl(rp.featuredImage, 'assets/img/product/small-product1.webp')} alt={rp.title} loading="lazy" />
                             </Link>
                           </div>
                           <div className="recent__post--info">
                             <h4 className="recent__post--title">
-                              <Link to={`/blog-details?slug=${rp.slug}`}>{rp.title}</Link>
+                              <Link to={`/blog/${rp.slug}`}>{rp.title}</Link>
                             </h4>
                             <span className="recent__post--date">{new Date(rp.publishedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</span>
                           </div>
