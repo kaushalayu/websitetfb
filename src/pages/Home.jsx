@@ -377,9 +377,7 @@ const Home = () => {
                                                 {banner.subtitle && <p className="slider__content--desc desc1 text-white mb-15">{banner.subtitle}</p>}
                                                 <h2 className="slider__content--maintitle text-white h1">{banner.title}</h2>
                                                 {banner.description && <p className="slider__content--desc text-white mb-35 d-sm-2-none">{banner.description}</p>}
-                                                {banner.link && (
-                                                    <Link to={banner.link} className="slider__content--btn primary__btn">{banner.btnText || "Shop Now"}</Link>
-                                                )}
+
                                             </div>
                                         </div>
                                     </div>
