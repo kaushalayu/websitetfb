@@ -471,7 +471,7 @@ body {
   padding: 6px 10px;
   font-family: "Josefin Sans", sans-serif;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 15px;
   color: var(--dark);
   text-decoration: none;
   border-radius: 6px;
@@ -4114,7 +4114,7 @@ input.quantity__number::-webkit-outer-spin-button {
 .footer__widget--desc {
   color: rgba(255, 255, 255, 0.7) !important;
   line-height: 1.8;
-  font-size: 14px;
+  font-size: 15px;
   margin-bottom: 15px;
 }
 
@@ -4170,7 +4170,7 @@ input.quantity__number::-webkit-outer-spin-button {
   position: relative;
   padding-left: 0;
   display: inline-block;
-  font-size: 14px;
+  font-size: 15px;
   text-decoration: none;
 }
 
@@ -5799,7 +5799,7 @@ input.quantity__number::-webkit-outer-spin-button {
 
 /* --- Header / Nav --- */
 .header__menu--link {
-  font-size: 14px !important;
+  font-size: 15px !important;
 }
 .header__sub--menu__link {
   font-size: 13px !important;

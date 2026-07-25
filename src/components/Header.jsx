@@ -31,7 +31,7 @@ const Header = () => {
         <div className="container-fluid">
           <div className="header__topbar--inner d-flex align-items-center justify-content-between">
             <div className="header__shipping">
-              <p className="header__shipping--text text-white">Lucknow's Best Furniture Store - 80% तक का छूट! 🏡
+              <p className="header__shipping--text text-white">Best Furniture Showroom in Lucknow
               </p>
             </div>
 
