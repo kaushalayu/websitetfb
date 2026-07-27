@@ -363,45 +363,7 @@ const Home = () => {
 
   return (
     <>
-    {loading && (
-      <main className="main__content_wrapper">
-        <div className="skeleton" style={{ width: '100%', height: '60vh', borderRadius: 0 }} />
-        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '40px 20px' }}>
-          <div className="stats-skeleton">
-            {Array.from({ length: 4 }).map((_, i) => (
-              <div className="stats-skeleton__card" key={i}>
-                <div className="skeleton skeleton--avatar" style={{ marginBottom: 12 }} />
-                <div className="skeleton skeleton--title" style={{ width: '50%' }} />
-                <div className="skeleton skeleton--text-sm" style={{ width: '70%', marginTop: 8 }} />
-              </div>
-            ))}
-          </div>
-          <div style={{ textAlign: 'center', marginBottom: 24 }}>
-            <div className="skeleton skeleton--text-sm" style={{ width: 120, height: 12, margin: '0 auto 8px' }} />
-            <div className="skeleton skeleton--title" style={{ width: 300, margin: '0 auto 8px' }} />
-            <div className="skeleton skeleton--text" style={{ width: 400, margin: '0 auto' }} />
-          </div>
-          <div className="product-skeleton">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <div className="product-skeleton__card" key={i}>
-                <div className="skeleton skeleton--img" />
-                <div className="product-skeleton__body">
-                  <div className="skeleton skeleton--text-sm" style={{ width: '40%' }} />
-                  <div className="skeleton skeleton--title" style={{ marginTop: 8 }} />
-                  <div className="product-skeleton__prices">
-                    <div className="skeleton skeleton--text" style={{ width: 80 }} />
-                    <div className="skeleton skeleton--text-sm" style={{ width: 60 }} />
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </main>
-    )}
-
-    {!loading && (<>
-<section className="hero__slider--section">
+    <section className="hero__slider--section">
             <div className="hero__slider--inner hero__slider--activation swiper" ref={heroSwiperRef}>
                 <div className="hero__slider--wrapper swiper-wrapper">
                     {banners.filter(b => b.type === 'hero' || !b.type).map((banner, idx) => (
@@ -977,7 +939,6 @@ const Home = () => {
             </div>
           </div>
         </section>
-    </>)}
     </>
   )
 }

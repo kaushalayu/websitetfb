@@ -391,19 +391,9 @@ const Shop = () => {
                 </div>
               )}
 
-              {/* Loading skeleton */}
               {loading && !error && (
-                <div className={`sp-grid ${viewMode === 'list' ? 'sp-grid--list' : ''}`}>
-                  {Array.from({ length: 8 }).map((_, i) => (
-                    <div key={i} className="sp-card sp-skeleton">
-                      <div className="sp-skeleton__img" />
-                      <div className="sp-skeleton__body">
-                        <div className="sp-skeleton__line" />
-                        <div className="sp-skeleton__line short" />
-                        <div className="sp-skeleton__line shorter" />
-                      </div>
-                    </div>
-                  ))}
+                <div className="sp-loading" style={{ textAlign: 'center', padding: '60px 20px', color: '#888' }}>
+                  <p>Loading products...</p>
                 </div>
               )}
 

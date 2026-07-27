@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import NewsletterBanner from '../components/NewsletterBanner'
 import { blogAPI, commentAPI, getImageUrl } from '../services/api'
-import useSEO, { SITE } from '../hooks/useSEO'
+import useSEO from '../hooks/useSEO'
 
 const BlogDetails = () => {
   const { slug } = useParams()
@@ -14,6 +14,8 @@ const BlogDetails = () => {
   const [tags, setTags] = useState([])
   const [form, setForm] = useState({ name: '', email: '', website: '', content: '' })
   const [submitting, setSubmitting] = useState(false)
+  const [commentError, setCommentError] = useState('')
+  const [commentSuccess, setCommentSuccess] = useState(false)
 
   useEffect(() => {
     if (!slug) return
@@ -26,7 +28,7 @@ const BlogDetails = () => {
           commentAPI.list(slug),
         ])
         setPost(postRes.data)
-        setComments(commentsRes.comments || [])
+        setComments(commentsRes.data?.comments || [])
         if (postRes.recentPosts) setRecentPosts(postRes.recentPosts)
       } catch (e) {
         if (import.meta.env.DEV) console.error(e)
@@ -42,19 +44,110 @@ const BlogDetails = () => {
     blogAPI.tags().then(res => setTags(res.data || [])).catch(() => {})
   }, [])
 
+  const siteUrl = 'https://thefurnitureboutique.in'
+
+  useSEO({
+    title: post ? (post.metaTitle || post.title) : 'Blog Post',
+    description: post ? (post.metaDescription || post.excerpt || post.title) : '',
+    canonical: post ? `/blog/${slug}` : null,
+    image: post?.ogImage || post?.featuredImage || null,
+    type: 'article',
+    schema: post ? {
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline: post.metaTitle || post.title,
+      description: post.metaDescription || post.excerpt || '',
+      image: post.featuredImage ? [{
+        '@type': 'ImageObject',
+        url: post.featuredImage,
+        description: post.featuredImageDescription || post.featuredImageAlt || '',
+        caption: post.featuredImageCaption || '',
+        name: post.featuredImageTitle || post.title,
+      }] : [],
+      author: { '@type': 'Person', name: post.author || 'The Furniture Boutique' },
+      publisher: {
+        '@type': 'Organization',
+        name: 'The Furniture Boutique',
+        logo: { '@type': 'ImageObject', url: `${siteUrl}/assets/img/favicon.ico` },
+      },
+      datePublished: post.publishedAt,
+      dateModified: post.updatedAt || post.publishedAt,
+      mainEntityOfPage: { '@type': 'WebPage', '@id': `${siteUrl}/blog/${slug}` },
+    } : undefined,
+  })
+
+  useEffect(() => {
+    if (!post) return
+    const breadcrumbSchema = {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      'itemListElement': [
+        { '@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': siteUrl },
+        { '@type': 'ListItem', 'position': 2, 'name': 'Blog', 'item': `${siteUrl}/blog` },
+        { '@type': 'ListItem', 'position': 3, 'name': post?.title || '', 'item': `${siteUrl}/blog/${slug}` }
+      ]
+    }
+    let script = document.getElementById('breadcrumb-schema')
+    if (!script) {
+      script = document.createElement('script')
+      script.id = 'breadcrumb-schema'
+      script.type = 'application/ld+json'
+      document.head.appendChild(script)
+    }
+    script.textContent = JSON.stringify(breadcrumbSchema)
+    return () => {
+      const el = document.getElementById('breadcrumb-schema')
+      if (el) el.remove()
+    }
+  }, [post, slug])
+
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value })
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    if (!form.name || !form.email || !form.content) return
+    setCommentError('')
+    setCommentSuccess(false)
+
+    // Client-side validation
+    if (!form.name.trim()) {
+      setCommentError('Please enter your name.')
+      return
+    }
+    if (!form.email.trim()) {
+      setCommentError('Please enter your email address.')
+      return
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(form.email.trim())) {
+      setCommentError('Please enter a valid email address.')
+      return
+    }
+    if (!form.content.trim()) {
+      setCommentError('Please write your comment.')
+      return
+    }
+    if (form.content.trim().length < 5) {
+      setCommentError('Comment is too short. Please write at least 5 characters.')
+      return
+    }
+
     try {
       setSubmitting(true)
-      const res = await commentAPI.submit(slug, form)
+      const res = await commentAPI.submit(slug, {
+        name: form.name.trim(),
+        email: form.email.trim(),
+        website: form.website.trim(),
+        content: form.content.trim(),
+      })
       setComments((prev) => [...prev, res.data?.comment || res.data || res])
       setForm({ name: '', email: '', website: '', content: '' })
+      setCommentSuccess(true)
+      setTimeout(() => setCommentSuccess(false), 5000)
     } catch (e) {
+      const msg = e?.response?.data?.message || e?.message || 'Failed to submit comment. Please try again.'
+      setCommentError(msg)
       if (import.meta.env.DEV) console.error(e)
     } finally {
       setSubmitting(false)
@@ -130,57 +223,6 @@ const BlogDetails = () => {
     )
   }
 
-  const siteUrl = 'https://thefurnitureboutique.in'
-
-  // Dynamic SEO for blog post
-  useSEO({
-    title: post ? (post.metaTitle || post.title) : 'Blog Post',
-    description: post ? (post.metaDescription || post.excerpt || post.title) : '',
-    canonical: post ? `/blog/${slug}` : null,
-    image: post?.ogImage || post?.featuredImage || null,
-    type: 'article',
-    schema: post ? {
-      '@context': 'https://schema.org',
-      '@type': 'Article',
-      headline: post.metaTitle || post.title,
-      description: post.metaDescription || post.excerpt || '',
-      image: post.featuredImage ? [post.featuredImage] : [],
-      author: { '@type': 'Person', name: post.author || 'The Furniture Boutique' },
-      publisher: {
-        '@type': 'Organization',
-        name: 'The Furniture Boutique',
-        logo: { '@type': 'ImageObject', url: `${siteUrl}/assets/img/favicon.ico` },
-      },
-      datePublished: post.publishedAt,
-      dateModified: post.updatedAt || post.publishedAt,
-      mainEntityOfPage: { '@type': 'WebPage', '@id': `${siteUrl}/blog/${slug}` },
-    } : undefined,
-  })
-
-  useEffect(() => {
-    const breadcrumbSchema = {
-      '@context': 'https://schema.org',
-      '@type': 'BreadcrumbList',
-      'itemListElement': [
-        { '@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': siteUrl },
-        { '@type': 'ListItem', 'position': 2, 'name': 'Blog', 'item': `${siteUrl}/blog` },
-        { '@type': 'ListItem', 'position': 3, 'name': post?.title || '', 'item': `${siteUrl}/blog/${slug}` }
-      ]
-    }
-    let script = document.getElementById('breadcrumb-schema')
-    if (!script) {
-      script = document.createElement('script')
-      script.id = 'breadcrumb-schema'
-      script.type = 'application/ld+json'
-      document.head.appendChild(script)
-    }
-    script.textContent = JSON.stringify(breadcrumbSchema)
-    return () => {
-      const el = document.getElementById('breadcrumb-schema')
-      if (el) el.remove()
-    }
-  }, [post, slug])
-
   return (
     <main className="main__content_wrapper">
       <section className="breadcrumb__section breadcrumb__bg">
@@ -222,7 +264,21 @@ const BlogDetails = () => {
 
                 {post.featuredImage && (
                   <div className="blog__thumbnail mb-30">
-                    <img className="blog__thumbnail--img" src={getImageUrl(post.featuredImage, 'assets/img/blog/blog1.webp')} alt={post.title} loading="lazy" />
+                    <img
+                      className="blog__thumbnail--img"
+                      src={getImageUrl(post.featuredImage, 'assets/img/blog/blog1.webp')}
+                      alt={post.featuredImageAlt || post.title}
+                      title={post.featuredImageTitle || post.title}
+                      loading="lazy"
+                    />
+                    {post.featuredImageCaption && (
+                      <p style={{
+                        fontSize: 13, color: '#6b7280', textAlign: 'center',
+                        marginTop: 8, fontStyle: 'italic', lineHeight: 1.5
+                      }}>
+                        {post.featuredImageCaption}
+                      </p>
+                    )}
                   </div>
                 )}
 
@@ -322,18 +378,31 @@ const BlogDetails = () => {
                     <form onSubmit={handleSubmit}>
                       <div className="row">
                         <div className="col-lg-4 col-md-6 mb-20">
-                          <input className="reviews__comment--reply__input" placeholder="Your Name *" type="text" name="name" value={form.name} onChange={handleChange} required />
+                          <input className="reviews__comment--reply__input" placeholder="Your Name *" type="text" name="name" value={form.name} onChange={handleChange} />
                         </div>
                         <div className="col-lg-4 col-md-6 mb-20">
-                          <input className="reviews__comment--reply__input" placeholder="Your Email *" type="email" name="email" value={form.email} onChange={handleChange} required />
+                          <input className="reviews__comment--reply__input" placeholder="Your Email *" type="email" name="email" value={form.email} onChange={handleChange} />
                         </div>
                         <div className="col-lg-4 col-md-6 mb-20">
                           <input className="reviews__comment--reply__input" placeholder="Website" type="text" name="website" value={form.website} onChange={handleChange} />
                         </div>
                         <div className="col-12 mb-15">
-                          <textarea className="reviews__comment--reply__textarea" placeholder="Your Comment *" name="content" value={form.content} onChange={handleChange} required></textarea>
+                          <textarea className="reviews__comment--reply__textarea" placeholder="Your Comment *" name="content" value={form.content} onChange={handleChange}></textarea>
                         </div>
                       </div>
+
+                      {commentError && (
+                        <div style={{ padding: '10px 14px', background: '#fff0f0', color: '#c0392b', borderRadius: 6, marginBottom: 14, fontSize: '14px', border: '1px solid #f5c6cb' }}>
+                          ⚠ {commentError}
+                        </div>
+                      )}
+
+                      {commentSuccess && (
+                        <div style={{ padding: '10px 14px', background: '#eaf7ef', color: '#2a7a4f', borderRadius: 6, marginBottom: 14, fontSize: '14px', border: '1px solid #b7e4ca' }}>
+                          ✓ Your comment has been submitted and is awaiting moderation. Thank you!
+                        </div>
+                      )}
+
                       <button className="primary__btn text-white" type="submit" disabled={submitting}>
                         {submitting ? 'Submitting...' : 'Post Comment'}
                       </button>

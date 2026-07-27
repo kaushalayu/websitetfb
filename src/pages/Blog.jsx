@@ -11,6 +11,7 @@ const Blog = () => {
   const [page, setPage] = useState(1)
   const [loading, setLoading] = useState(true)
   const [pageLoading, setPageLoading] = useState(false)
+  const [error, setError] = useState(null)
 
   useSEO({
     title: 'Blog - Furniture Tips, Design Ideas & Home Inspiration',
@@ -20,12 +21,13 @@ const Blog = () => {
 
   useEffect(() => {
     setPageLoading(true)
+    setError(null)
     blogAPI.list({ page, limit: 6 })
       .then(res => {
-        setPosts(res.data)
-        setPagination(res.pagination)
+        setPosts(res.data || [])
+        setPagination(res.pagination || { page: 1, pages: 1 })
       })
-      .catch(() => {})
+      .catch(() => { setError('Failed to load posts. Please try again.') })
       .finally(() => { setLoading(false); setPageLoading(false) })
   }, [page])
 
@@ -75,26 +77,10 @@ const Blog = () => {
                 <p className="blog-header-sub">Tips, ideas & inspiration for your home</p>
               </div>
 
-              {loading ? (
-                <div className="blog-skeleton">
-                  {Array.from({ length: 6 }).map((_, i) => (
-                    <div className="blog-skeleton__card" key={i}>
-                      <div className="skeleton skeleton--img" />
-                      <div className="blog-skeleton__body">
-                        <div className="blog-skeleton__meta">
-                          <div className="skeleton skeleton--text-sm" style={{ width: 80 }} />
-                          <div className="skeleton skeleton--text-sm" style={{ width: 100 }} />
-                        </div>
-                        <div className="skeleton skeleton--title" style={{ marginBottom: 8 }} />
-                        <div className="blog-skeleton__lines">
-                          <div className="skeleton skeleton--text" />
-                          <div className="skeleton skeleton--text" />
-                          <div className="skeleton skeleton--text-sm" />
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+              {error ? (
+                <div className="blog-empty" style={{ color: '#c0392b' }}>{error}</div>
+              ) : loading || pageLoading ? (
+                <div className="blog-empty" style={{ color: '#888' }}>Loading posts...</div>
               ) : posts.length === 0 ? (
                 <div className="blog-empty">No posts yet.</div>
               ) : (
@@ -157,33 +143,13 @@ const Blog = () => {
                           <polyline points="12 19 5 12 12 5" />
                         </svg>
                       </button>
-                      {pageNumbers.map(p => (
+                      {pageNumbers.map(p =>
                         p === page ? (
                           <span className="blog-pagination__item blog-pagination__item--active" key={p}>{p}</span>
-              ) : pageLoading ? (
-                <div className="blog-skeleton">
-                  {Array.from({ length: 6 }).map((_, i) => (
-                    <div className="blog-skeleton__card" key={i}>
-                      <div className="skeleton skeleton--img" />
-                      <div className="blog-skeleton__body">
-                        <div className="blog-skeleton__meta">
-                          <div className="skeleton skeleton--text-sm" style={{ width: 80 }} />
-                          <div className="skeleton skeleton--text-sm" style={{ width: 100 }} />
-                        </div>
-                        <div className="skeleton skeleton--title" style={{ marginBottom: 8 }} />
-                        <div className="blog-skeleton__lines">
-                          <div className="skeleton skeleton--text" />
-                          <div className="skeleton skeleton--text" />
-                          <div className="skeleton skeleton--text-sm" />
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
+                        ) : (
                           <button className="blog-pagination__item" onClick={() => setPage(p)} key={p}>{p}</button>
                         )
-                      ))}
+                      )}
                       <button
                         className="blog-pagination__arrow"
                         onClick={() => setPage(p => Math.min(pagination.pages, p + 1))}
