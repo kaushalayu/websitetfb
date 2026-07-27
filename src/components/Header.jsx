@@ -53,7 +53,7 @@ const Header = () => {
               </a>
             </div>
             <div className="main__logo">
-                <h1 className="main__logo--title"><Link className="main__logo--link" to="/"><img className="main__logo--img" src={getImageUrl(siteLogo, 'assets/img/logo/nav-log.webp')} alt={siteName} /></Link></h1>
+                <h1 className="main__logo--title"><Link className="main__logo--link" to="/">{siteLogo ? <img className="main__logo--img" src={getImageUrl(siteLogo)} alt={siteName} /> : siteName}</Link></h1>
             </div>
             <div className="header__menu d-none d-lg-block">
               <nav className="header__menu--navigation">
@@ -141,7 +141,7 @@ const Header = () => {
         <div className="offcanvas__inner">
           <div className="offcanvas__logo">
             <Link className="offcanvas__logo_link" to="/">
-              <img src={getImageUrl(siteLogo, 'assets/img/logo/nav-log.webp')} alt={siteName} loading="lazy" />
+              {siteLogo ? <img src={getImageUrl(siteLogo)} alt={siteName} loading="lazy" /> : siteName}
             </Link>
             <button className="offcanvas__close--btn" aria-label="offcanvas close btn">close</button>
           </div>

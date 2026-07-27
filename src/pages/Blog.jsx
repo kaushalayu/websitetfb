@@ -9,6 +9,8 @@ const Blog = () => {
   const [recentPosts, setRecentPosts] = useState([])
   const [pagination, setPagination] = useState({ page: 1, pages: 1 })
   const [page, setPage] = useState(1)
+  const [loading, setLoading] = useState(true)
+  const [pageLoading, setPageLoading] = useState(false)
 
   useSEO({
     title: 'Blog - Furniture Tips, Design Ideas & Home Inspiration',
@@ -17,12 +19,14 @@ const Blog = () => {
   })
 
   useEffect(() => {
+    setPageLoading(true)
     blogAPI.list({ page, limit: 6 })
       .then(res => {
         setPosts(res.data)
         setPagination(res.pagination)
       })
       .catch(() => {})
+      .finally(() => { setLoading(false); setPageLoading(false) })
   }, [page])
 
   useEffect(() => {
@@ -71,7 +75,27 @@ const Blog = () => {
                 <p className="blog-header-sub">Tips, ideas & inspiration for your home</p>
               </div>
 
-              {posts.length === 0 ? (
+              {loading ? (
+                <div className="blog-skeleton">
+                  {Array.from({ length: 6 }).map((_, i) => (
+                    <div className="blog-skeleton__card" key={i}>
+                      <div className="skeleton skeleton--img" />
+                      <div className="blog-skeleton__body">
+                        <div className="blog-skeleton__meta">
+                          <div className="skeleton skeleton--text-sm" style={{ width: 80 }} />
+                          <div className="skeleton skeleton--text-sm" style={{ width: 100 }} />
+                        </div>
+                        <div className="skeleton skeleton--title" style={{ marginBottom: 8 }} />
+                        <div className="blog-skeleton__lines">
+                          <div className="skeleton skeleton--text" />
+                          <div className="skeleton skeleton--text" />
+                          <div className="skeleton skeleton--text-sm" />
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : posts.length === 0 ? (
                 <div className="blog-empty">No posts yet.</div>
               ) : (
                 <>
@@ -136,7 +160,27 @@ const Blog = () => {
                       {pageNumbers.map(p => (
                         p === page ? (
                           <span className="blog-pagination__item blog-pagination__item--active" key={p}>{p}</span>
-                        ) : (
+              ) : pageLoading ? (
+                <div className="blog-skeleton">
+                  {Array.from({ length: 6 }).map((_, i) => (
+                    <div className="blog-skeleton__card" key={i}>
+                      <div className="skeleton skeleton--img" />
+                      <div className="blog-skeleton__body">
+                        <div className="blog-skeleton__meta">
+                          <div className="skeleton skeleton--text-sm" style={{ width: 80 }} />
+                          <div className="skeleton skeleton--text-sm" style={{ width: 100 }} />
+                        </div>
+                        <div className="skeleton skeleton--title" style={{ marginBottom: 8 }} />
+                        <div className="blog-skeleton__lines">
+                          <div className="skeleton skeleton--text" />
+                          <div className="skeleton skeleton--text" />
+                          <div className="skeleton skeleton--text-sm" />
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
                           <button className="blog-pagination__item" onClick={() => setPage(p)} key={p}>{p}</button>
                         )
                       ))}

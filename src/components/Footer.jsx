@@ -44,8 +44,7 @@ const Footer = () => {
                   </svg>
                 </h2>
                 <div className="footer__widget--inner">
-                  <Link className="footer__logo" to="/"><img src={getImageUrl(siteLogo, 'assets/img/logo/nav-log.webp')}
-                    alt={siteName} loading="lazy"/></Link>
+                  <Link className="footer__logo" to="/">{siteLogo ? <img src={getImageUrl(siteLogo)} alt={siteName} loading="lazy"/> : siteName}</Link>
                   <p className="footer__widget--desc">{siteName} - Lucknow's <br/> premier destination for premium quality furniture. <br/> We bring elegance to your home.</p>
                     <div className="footer__social">
                       <ul className="social__shear d-flex">

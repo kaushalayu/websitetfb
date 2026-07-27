@@ -183,7 +183,25 @@ const ProductVariable = () => {
             </div>
           </div>
         </section>
-        <div className="container text-center py-5"><h3>Loading...</h3></div>
+        <section className="product__details--section section--padding">
+          <div className="container">
+            <div className="row row-cols-lg-2 row-cols-md-2">
+              <div className="col">
+                <div className="skeleton" style={{ width: '100%', aspectRatio: '1/1', borderRadius: 12 }} />
+              </div>
+              <div className="col">
+                <div className="skeleton skeleton--title" style={{ marginBottom: 12, width: '80%' }} />
+                <div className="skeleton skeleton--text" style={{ width: 120, height: 24, marginBottom: 16 }} />
+                <div className="skeleton skeleton--text" style={{ marginBottom: 12, width: '60%' }} />
+                <div className="skeleton skeleton--text" style={{ marginBottom: 8 }} />
+                <div className="skeleton skeleton--text" style={{ marginBottom: 8 }} />
+                <div className="skeleton skeleton--text-sm" style={{ marginBottom: 24, width: '90%' }} />
+                <div className="skeleton skeleton--text" style={{ width: 200, height: 44, borderRadius: 8, marginBottom: 16 }} />
+                <div className="skeleton skeleton--text" style={{ width: 160, height: 44, borderRadius: 8 }} />
+              </div>
+            </div>
+          </div>
+        </section>
         <NewsletterBanner />
       </main>
     )
