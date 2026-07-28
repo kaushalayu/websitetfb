@@ -19,7 +19,7 @@ const Checkout = () => {
     city: '',
     country: 'India',
     postalCode: '',
-    orderNotes: '',
+    notes: '',
   })
   const [couponCode, setCouponCode] = useState('')
   const [loading, setLoading] = useState(false)
@@ -49,7 +49,7 @@ const Checkout = () => {
           country: formData.country,
           postalCode: formData.postalCode,
         },
-        orderNotes: formData.orderNotes,
+        notes: formData.notes,
         couponCode,
       }
       await orderAPI.create(orderData)
@@ -461,13 +461,13 @@ const Checkout = () => {
 
                                     <label className="checkout__input--label mb-5" htmlFor="order">Order Notes <span className="checkout__input--label__star">*</span></label>
 
-                                   <textarea className="checkout__notes--textarea__field border-radius-5" id="order" placeholder="Notes about your order, e.g. special notes for delivery." spellcheck="false" value={formData.orderNotes} onChange={update('orderNotes')}></textarea>
+                                   <textarea className="checkout__notes--textarea__field border-radius-5" id="order" placeholder="Notes about your order, e.g. special notes for delivery." spellcheck="false" value={formData.notes} onChange={update('notes')}></textarea>
 
                                 </div>
 
                                 <div className="checkout__content--step__footer d-flex align-items-center">
 
-                                    <Link className="continue__shipping--btn primary__btn border-radius-5" to="/">Continue To Shipping</Link>
+                                    <button type="submit" className="continue__shipping--btn primary__btn border-radius-5">Place Order</button>
 
                                     <Link className="previous__link--content" to="/cart">Return to cart</Link>
 

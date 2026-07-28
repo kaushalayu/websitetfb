@@ -47,6 +47,16 @@ const BlogDetails = () => {
     blogAPI.tags().then(res => setTags(res.data || [])).catch(() => {})
   }, [])
 
+  const sanitizeHtml = (html) => {
+    if (!html) return ''
+    return html
+      .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+      .replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, '')
+      .replace(/\s+on\w+\s*=\s*["'][^"']*["']/gi, '')
+      .replace(/\s+on\w+\s*=\s*[^\s>]*/gi, '')
+      .replace(/javascript\s*:/gi, '')
+  }
+
   const siteUrl = 'https://thefurnitureboutique.in'
 
   // Ensure image URLs are absolute for OG/schema
@@ -169,13 +179,12 @@ const BlogDetails = () => {
 
     try {
       setSubmitting(true)
-      const res = await commentAPI.submit(slug, {
+      await commentAPI.submit(slug, {
         name: form.name.trim(),
         email: form.email.trim(),
         website: form.website.trim(),
         content: form.content.trim(),
       })
-      setComments((prev) => [...prev, res.data?.comment || res.data || res])
       setForm({ name: '', email: '', website: '', content: '' })
       setCommentSuccess(true)
       setTimeout(() => setCommentSuccess(false), 5000)
@@ -316,7 +325,7 @@ const BlogDetails = () => {
                   </div>
                 )}
 
-                <div className="blog__details--content" dangerouslySetInnerHTML={{ __html: post.content }} />
+                <div className="blog__details--content" dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.content) }} />
 
                 <div className="blog__tags--social__media d-flex align-items-center justify-content-between">
                   {post.tags && post.tags.length > 0 && (

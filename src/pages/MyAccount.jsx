@@ -15,7 +15,7 @@ const MyAccount = () => {
     const fetchOrders = async () => {
       try {
         const data = await orderAPI.list()
-        setOrders(data.orders || data || [])
+        setOrders(data.data || data || [])
       } catch {
         setOrders([])
       } finally {

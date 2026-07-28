@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import NewsletterBanner from '../components/NewsletterBanner'
 import { useWishlist } from '../context/WishlistContext'
 import { useCart } from '../context/CartContext'
+import { getImageUrl } from '../services/api'
 
 const Wishlist = () => {
   const { items, removeItem } = useWishlist()

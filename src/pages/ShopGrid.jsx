@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { productAPI, getImageUrl } from '../services/api'
+import { useCart } from '../context/CartContext'
 import NewsletterBanner from '../components/NewsletterBanner'
 
 const ShopGrid = () => {
+  const { addItem } = useCart()
   const [searchParams, setSearchParams] = useSearchParams()
   const [products, setProducts] = useState([])
   const [loading, setLoading] = useState(true)
@@ -377,7 +379,7 @@ const ShopGrid = () => {
 
                                                         </div>
 
-                                                        <Link to="/cart" className="product__items--action__cart--btn primary__btn" >
+                                                        <button type="button" className="product__items--action__cart--btn primary__btn" onClick={() => addItem(product, 1)}>
 
                                                             <svg className="product__items--action__cart--btn__icon" xmlns="http://www.w3.org/2000/svg" width="13.897" height="14.565" viewBox="0 0 18.897 21.565">
 
@@ -387,7 +389,7 @@ const ShopGrid = () => {
 
                                                             <span className="add__to--cart__text"> Add to cart</span>
 
-                                                        </Link>
+                                                        </button>
 
                                                     </div>
 
@@ -537,7 +539,7 @@ const ShopGrid = () => {
 
                                                         <div className="product__list--action">
 
-                                                            <Link to="/cart" className="product__list--action__cart--btn primary__btn" >
+                                                            <button type="button" className="product__list--action__cart--btn primary__btn" onClick={() => addItem(product, 1)}>
 
                                                                 <svg className="product__list--action__cart--btn__icon" xmlns="http://www.w3.org/2000/svg" width="16.897" height="17.565" viewBox="0 0 18.897 21.565">
 
@@ -547,7 +549,7 @@ const ShopGrid = () => {
 
                                                                 <span className="product__list--action__cart--text"> Add To Cart</span>
 
-                                                            </Link>
+                                                            </button>
 
                                                             <ul className="product__list--action__wrapper d-flex align-items-center">
 

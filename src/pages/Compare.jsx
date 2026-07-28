@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import NewsletterBanner from '../components/NewsletterBanner'
 import { useCompare } from '../context/CompareContext'
 import { useCart } from '../context/CartContext'
+import { getImageUrl } from '../services/api'
 
 const Compare = () => {
   const { items, removeItem } = useCompare()

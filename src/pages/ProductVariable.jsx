@@ -82,7 +82,7 @@ const ProductVariable = () => {
         '@type': 'Offer',
         priceCurrency: 'INR',
         price: product.salePrice || product.price || 0,
-        availability: product.stock > 0
+        availability: (product.stockQuantity > 0 || product.inStock)
           ? 'https://schema.org/InStock'
           : 'https://schema.org/OutOfStock',
         url: `https://thefurnitureboutique.in/product/${product.slug}`,
@@ -109,10 +109,10 @@ const ProductVariable = () => {
         ])
         setProduct(productRes.data)
         setRelatedProducts(relatedRes.data || [])
-        if (reviewsRes.data) {
-          setReviews(reviewsRes.data.reviews || [])
-          setAverageRating(reviewsRes.data.averageRating || 0)
-          setTotalReviews(reviewsRes.data.totalReviews || 0)
+        if (reviewsRes) {
+          setReviews(Array.isArray(reviewsRes.data) ? reviewsRes.data : reviewsRes.data?.reviews || [])
+          setAverageRating(reviewsRes.averageRating || reviewsRes.data?.averageRating || 0)
+          setTotalReviews(reviewsRes.totalReviews || reviewsRes.data?.totalReviews || 0)
         }
       } catch (err) {
         setError(err.message)
@@ -156,10 +156,10 @@ const ProductVariable = () => {
       setReviewRating(5)
       setReviewContent('')
       const reviewsRes = await reviewAPI.getProductReviews(slug)
-      if (reviewsRes.data) {
-        setReviews(reviewsRes.data.reviews || [])
-        setAverageRating(reviewsRes.data.averageRating || 0)
-        setTotalReviews(reviewsRes.data.totalReviews || 0)
+      if (reviewsRes) {
+        setReviews(Array.isArray(reviewsRes.data) ? reviewsRes.data : reviewsRes.data?.reviews || [])
+        setAverageRating(reviewsRes.averageRating || reviewsRes.data?.averageRating || 0)
+        setTotalReviews(reviewsRes.totalReviews || reviewsRes.data?.totalReviews || 0)
       }
     } catch {}
     setSubmittingReview(false)
@@ -295,7 +295,7 @@ const ProductVariable = () => {
                                   id={`color-${idx}`}
                                   name="color"
                                   type="radio"
-                                  checked={selectedColor === color}
+                                  checked={selectedColor === color || selectedColor?.name === color?.name}
                                   onChange={() => setSelectedColor(color)}
                                 />
                                 <label className="variant__color--value red" htmlFor={`color-${idx}`} title={color}>
