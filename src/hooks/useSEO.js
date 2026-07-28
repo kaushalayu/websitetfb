@@ -20,7 +20,15 @@ const DEFAULT_IMG = `${SITE}/assets/img/banner/banner1.webp`
 const useSEO = ({ title, description, canonical, image, type = 'website', schema, noindex = false }) => {
   useEffect(() => {
     const fullTitle = title ? `${title} | ${SITE_NAME}` : `${SITE_NAME} - Premium Furniture Store in Lucknow`
-    const img = image || DEFAULT_IMG
+
+    // Ensure image is always an absolute URL
+    const toAbsolute = (url) => {
+      if (!url) return DEFAULT_IMG
+      if (url.startsWith('http://') || url.startsWith('https://')) return url
+      return `${SITE}/${url.replace(/^\//, '')}`
+    }
+    const img = toAbsolute(image)
+
     const canonicalUrl = canonical ? `${SITE}${canonical}` : null
 
     // --- Title ---

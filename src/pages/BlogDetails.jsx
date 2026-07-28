@@ -49,29 +49,60 @@ const BlogDetails = () => {
 
   const siteUrl = 'https://thefurnitureboutique.in'
 
+  // Ensure image URLs are absolute for OG/schema
+  const toAbsolute = (url) => {
+    if (!url) return null
+    if (url.startsWith('http://') || url.startsWith('https://')) return url
+    return `${siteUrl}/${url.replace(/^\//, '')}`
+  }
+
+  const ogImage = toAbsolute(post?.ogImage || post?.featuredImage) || `${siteUrl}/assets/img/banner/banner1.webp`
+  const featuredImageAbsolute = toAbsolute(post?.featuredImage)
+
+  // Truncate description to 160 chars for meta
+  const truncate = (str, max) => {
+    if (!str) return ''
+    return str.length > max ? str.slice(0, max - 1).trimEnd() + '…' : str
+  }
+
+  const metaDesc = truncate(post ? (post.metaDescription || post.excerpt || post.title) : '', 160)
+  const headline = post ? truncate(post.metaTitle || post.title, 110) : 'Blog Post'
+
   useSEO({
     title: post ? (post.metaTitle || post.title) : 'Blog Post',
-    description: post ? (post.metaDescription || post.excerpt || post.title) : '',
+    description: metaDesc,
     canonical: post ? `/blog/${slug}` : null,
-    image: post?.ogImage || post?.featuredImage || null,
+    image: ogImage,
     type: 'article',
     schema: post ? {
       '@context': 'https://schema.org',
       '@type': 'Article',
-      headline: post.metaTitle || post.title,
-      description: post.metaDescription || post.excerpt || '',
-      image: post.featuredImage ? [{
-        '@type': 'ImageObject',
-        url: post.featuredImage,
-        description: post.featuredImageDescription || post.featuredImageAlt || '',
-        caption: post.featuredImageCaption || '',
-        name: post.featuredImageTitle || post.title,
-      }] : [],
-      author: { '@type': 'Person', name: post.author || 'The Furniture Boutique' },
+      headline,
+      description: metaDesc,
+      ...(featuredImageAbsolute ? {
+        image: [{
+          '@type': 'ImageObject',
+          url: featuredImageAbsolute,
+          ...(post.featuredImageDescription || post.featuredImageAlt
+            ? { description: post.featuredImageDescription || post.featuredImageAlt }
+            : {}),
+          ...(post.featuredImageCaption ? { caption: post.featuredImageCaption } : {}),
+          name: post.featuredImageTitle || post.title,
+        }]
+      } : {}),
+      author: {
+        '@type': 'Person',
+        name: typeof post.author === 'object' ? (post.author?.name || 'The Furniture Boutique') : (post.author || 'The Furniture Boutique'),
+      },
       publisher: {
         '@type': 'Organization',
         name: 'The Furniture Boutique',
-        logo: { '@type': 'ImageObject', url: `${siteUrl}/assets/img/favicon.ico` },
+        logo: {
+          '@type': 'ImageObject',
+          url: `${siteUrl}/assets/img/logo.png`,
+          width: 200,
+          height: 60,
+        },
       },
       datePublished: post.publishedAt,
       dateModified: post.updatedAt || post.publishedAt,
@@ -233,11 +264,11 @@ const BlogDetails = () => {
           <div className="row row-cols-1">
             <div className="col">
               <div className="breadcrumb__content">
-                <h1 className="breadcrumb__content--title text-white mb-10">{post.title?.slice(0, 50)}</h1>
+                <h1 className="breadcrumb__content--title text-white mb-10">Blog Details</h1>
                 <ul className="breadcrumb__content--menu d-flex">
                   <li className="breadcrumb__content--menu__items"><Link className="text-white" to="/">Home</Link></li>
                   <li className="breadcrumb__content--menu__items"><Link className="text-white" to="/blog">Blog</Link></li>
-                  <li className="breadcrumb__content--menu__items"><span className="text-white">{post.title?.slice(0, 40)}</span></li>
+                  <li className="breadcrumb__content--menu__items"><span className="text-white">{post.title?.length > 35 ? post.title.slice(0, 35) + '…' : post.title}</span></li>
                 </ul>
               </div>
             </div>
