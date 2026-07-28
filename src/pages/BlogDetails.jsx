@@ -19,16 +19,12 @@ const BlogDetails = () => {
 
   useEffect(() => {
     if (!slug) return
-    const fetchData = async () => {
+    const fetchPost = async () => {
       try {
         setLoading(true)
         setError(null)
-        const [postRes, commentsRes] = await Promise.all([
-          blogAPI.getBySlug(slug),
-          commentAPI.list(slug),
-        ])
+        const postRes = await blogAPI.getBySlug(slug)
         setPost(postRes.data)
-        setComments(commentsRes.data?.comments || [])
         if (postRes.recentPosts) setRecentPosts(postRes.recentPosts)
       } catch (e) {
         if (import.meta.env.DEV) console.error(e)
@@ -37,7 +33,14 @@ const BlogDetails = () => {
         setLoading(false)
       }
     }
-    fetchData()
+    fetchPost()
+  }, [slug])
+
+  useEffect(() => {
+    if (!slug) return
+    commentAPI.list(slug)
+      .then(res => setComments(res.data?.comments || []))
+      .catch(() => {})
   }, [slug])
 
   useEffect(() => {
